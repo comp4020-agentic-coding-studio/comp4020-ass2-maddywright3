@@ -1,19 +1,29 @@
 ---
 title: Ship It, Then Pay the Hundred-x
 description:
-  The claimed statistic, how it got debunked, and the real, surviving
-  number underneath it
+  The claimed statistic, how it got debunked, what survives peer review,
+  where it sits inside a factory's whole cost-of-quality picture, and why
+  even the surviving number is now a live argument, not a settled one
 ---
 
 {/* _class: impact */}
 
-# 1x → 6.5x → 15x → 100x
+# Cost of quality is a ledger, not a vibe
 
-**The chart everyone in software has seen at least once.**
+**Quality engineers already split cost into prevention, appraisal, and
+failure — which means manufacturing can put a real number on "the last
+mile is expensive" that every other week in this course had to argue its
+way toward.**
+
+```notes
+This is the week's whole pitch: not a new example of the thesis, an
+accounting of it. Say that plainly before the chart goes up, so the room
+reads what follows as a ledger entry, not a slogan.
+```
 
 ---
 
-## The claim
+## The chart everyone in software has seen
 
 Cost to fix a defect, by the stage you catch it at:
 
@@ -37,14 +47,24 @@ Most hands go up. That's the setup for the next slide.
 
 ## The problem
 
-> "The 'IBM Systems Sciences Institute' study has never been produced."
+> "We'll hone our scholarship skills by looking up the original source for
+> these ideas."
 
-Software researchers Hillel Wayne and Laurent Bossavit traced the citation
-trail back through decades of textbooks. It dead-ends in 1981 internal IBM
-training notes, with no public dataset behind them.
+**Laurent Bossavit, *The Leprechauns of Software Engineering***
 
-A number that got laundered into "settled research" by being repeated —
-not by being re-measured.
+Bossavit devotes a full chapter — "The cost of defects: an illustrated
+history" — to tracing this exact chart's citation trail back through
+decades of textbooks. It dead-ends in 1981 internal IBM training notes,
+with no public dataset behind them.
+
+[Read the chapter yourself →](https://leanpub.com/leprechauns)
+
+```notes
+This is the primary source now, not the journalism about it — cite the
+book, not just The Register's write-up of the book. A number that got
+laundered into "settled research" by being repeated, not by being
+re-measured.
+```
 
 ---
 
@@ -61,24 +81,308 @@ impressive-sounding institute's name did not.
 
 ---
 
-## Why this is a week 6 slide, not a footnote
+## Cost of quality, zoomed out
 
-A course built on finishing things properly can't cite a stat that never
-finished being checked.
+A single defect's multiplier is one line item inside a much bigger number:
 
-The multiplier in this week's slider is unit-less on purpose — every
-dollar-denominated version we could find traces back to the same
-unverifiable IBM lineage. The honest number is a ratio, not a price.
+- Total quality cost — prevention + appraisal + failure combined — runs
+  **10 to 20% of revenue** in a typical, well-run firm.
+- In a poorly-run one: **up to 40%**.
+
+That's the American Society for Quality's own benchmark for the ledger
+this whole chart lives inside.
+
+```notes
+ASQ's own cost-of-quality page returned a 403 to every automated check we
+ran (curl and a scripted browser fetch both blocked) — not confirmed
+bot-friendly, so this is cited via Mooncamp's glossary entry, which
+quotes and directly attributes the figure to ASQ:
+https://mooncamp.com/glossary/cost-of-quality-coq. That makes this one
+step removed from the primary org's own page, not a first-hand citation
+— say so if asked where the number comes from.
+```
 
 ---
 
-{/* _class: centered */}
+## Still true, or just old?
 
-## Trace the citation trail yourself
+Mike Cohn argues Boehm's curve has been flattening for decades — modern
+IDEs, automated testing and CI, and modular architecture each cut into it
+before agile even started:
 
-![qr](https://www.theregister.com/2021/07/22/bugs_expense_bs/)
+> "The problem isn't that Boehm was wrong. The problem is that we treated
+> his findings as if they were timeless."
+
+[Read the argument →](https://mountaingoatsoftware.com/blog/the-cost-of-change-curve-is-outdated)
+
+This is a live disagreement, not a resolved one.
 
 ```notes
-The QR code is the citation-laundering writeup itself — worth having up
-while you make this point, not just citing it verbally.
+Don't let this slide land as "so the 100x number is debunked too." It
+isn't debunked, it's contested — and presenting it as settled either way
+would repeat exactly the mistake this week just spent five slides
+examining. If pressed for a verdict: say there isn't one yet, and that's
+the honest answer.
+```
+
+---
+
+## The peer-reviewed number, disaggregated
+
+Boehm and Basili didn't publish one multiplier — they published two, and
+the gap between them is the argument:
+
+| Project size | Post-delivery vs. design-stage fix cost |
+| --- | --- |
+| Large | ~100x |
+| Small, non-critical | ~5:1 |
+
+Same defect, same category of mistake. The multiplier isn't a property of
+the bug — it's a property of how much finished work already sits on top
+of it by the time someone else finds it.
+
+[Read the paper →](https://ieeexplore.ieee.org/document/962984/)
+
+```notes
+This is the citation that was missing from the earlier version of this
+deck — the "survives" claim had no direct link. Boehm & Basili, "Software
+Defect Reduction Top 10 List," IEEE Computer, Jan 2001.
+```
+
+---
+
+## Where NIST's own number actually falls
+
+NIST's 2002 report splits its $59.5B/$22.2B national estimate by who
+absorbs it:
+
+| Who bears it | Annual cost | Recoverable |
+| --- | --- | --- |
+| Software developers | $21.2B | $10.6B |
+| Software users | $38.3B | $11.7B |
+
+Nearly two-thirds of the cost, and most of what's actually recoverable,
+sits on the far side of the sale — with the people who didn't write the
+defect.
+
+```notes
+Same NIST Planning Report 02-3 already cited earlier — this is a second,
+distinct table from the actual report body, not the headline aggregate.
+Verified against the report's own extracted text, not secondary summaries.
+```
+
+---
+
+## Two manufacturing sectors, in NIST's own figures
+
+The same report breaks its estimate down by industry. Two are
+manufacturing's own:
+
+| Sector | Annual cost | Recoverable (50% error reduction) |
+| --- | --- | --- |
+| Automotive | $1,229.7M | $377.0M |
+| Aerospace | $237.4M | $54.5M |
+
+This is the closest thing in the report to a manufacturing-specific dollar
+figure — and it's still an aggregate across the whole sector, not a
+per-defect price. It confirms the shape of the claim without letting us
+launder it into a false precision.
+
+---
+
+{/* _class: quote */}
+
+## Case study: Therac-25
+
+Between 1985 and 1987, a radiation therapy machine delivered massive
+overdoses to six patients. Several died.
+
+> "A detailed investigation of the factors involved in the
+> software-related overdoses... presents lessons learned in terms of
+> system engineering, software engineering, and government regulation of
+> safety-critical systems."
+
+**Leveson & Turner, *IEEE Computer*, 1993**
+
+The race condition behind it existed in code carried over from an earlier,
+less automated model — nobody re-verified it against the new machine's
+removed hardware interlocks until after it had already shipped.
+
+[Read the investigation →](https://ieeexplore.ieee.org/document/274940)
+
+```notes
+This is the multiplier's ceiling — not "expensive," but irreversible.
+Don't over-state the death count beyond what the paper itself says
+("several") — that's the accurate, sourced figure.
+```
+
+---
+
+## Case study: Ariane 5 Flight 501
+
+37 seconds after liftoff on its maiden flight, the rocket veered off
+course and was destroyed. ESA's own Inquiry Board, chaired by
+Jacques-Louis Lions, found:
+
+> "The failure... was due to specification and design errors in the
+> software of the inertial reference system."
+
+The software itself was inherited, unchanged, from Ariane 4 — where the
+same code path had never been able to overflow. Nobody re-checked that
+assumption against Ariane 5's faster trajectory.
+
+> "The extensive reviews and tests carried out during the Ariane 5
+> development programme did not include adequate analysis and testing."
+
+[Read ESA's report →](https://www.esa.int/Newsroom/Press_Releases/Ariane_501_-_Presentation_of_Inquiry_Board_report)
+
+```notes
+The sharpest complication of the week: the last mile here wasn't
+finishing new work, it was re-verifying old, already-trusted work carried
+into a context where its own assumptions no longer held.
+```
+
+---
+
+## Case study: Mars Climate Orbiter
+
+The orbiter was lost approaching Mars in 1999. NASA's own Mishap
+Investigation Board, chaired by Arthur Stephenson, found the root cause
+was a units mismatch: one team's ground software produced thruster data
+in pound-seconds, and the navigation team's software expected newton-
+seconds, as the interface spec required.
+
+Both pieces of software had presumably been tested on their own. Nobody
+caught the mismatch until the whole system was already flying.
+
+[Read NASA's Phase I report →](https://llis.nasa.gov/llis_lib/pdf/1009464main1_0641-mr.pdf)
+
+```notes
+Don't invent a dollar figure for this one — the primary report is a
+scanned document with no reliably extractable cost figure, and other
+sources disagree on exactly what's being totalled (spacecraft vs. launch
+vs. whole program). Stick to the verified root cause.
+```
+
+---
+
+## Case study: Boeing 737 MAX
+
+Two crashes, five months apart, 346 people. The US House Committee on
+Transportation and Infrastructure's 18-month investigation put it
+bluntly:
+
+> "The MAX crashes were... a horrific culmination of a series of faulty
+> technical assumptions by Boeing's engineers, a lack of transparency on
+> the part of Boeing's management, and grossly insufficient oversight by
+> the FAA."
+
+This is the organisational version of the same failure: MCAS, the flight
+control software behind both crashes, existed inside a certification
+process under competitive and schedule pressure to treat the last mile of
+review as a formality rather than a gate.
+
+[Read the Committee's report →](https://democrats-transportation.house.gov/imo/media/doc/final_boeing_737_max_report1.pdf)
+
+```notes
+This is the one case study here that isn't primarily a software-defect
+story — it's what happens when the institution responsible for the
+last-mile check is under the same pressure to finish as the team being
+checked.
+```
+
+---
+
+## The formula, made explicit
+
+Quality engineers formalise this week's opening claim as an actual
+equation, not just a category split:
+
+**Cost of Quality = Cost of Conformance + Cost of Nonconformance**
+
+Where conformance splits into **prevention** and **appraisal**, and
+nonconformance splits into **internal failure** and **external failure**
+— the same four buckets this week opened with.
+
+> "Failure to identify a given cost as a quality cost, or incorrectly
+> categorizing it, may result in misleading decisions on actions to
+> improve quality."
+
+**Mustafa Shraim, Ohio University — American Society for Engineering
+Education, 2020**
+
+[Read the paper →](https://peer.asee.org/a-simple-model-for-identifying-costs-of-quality.pdf)
+
+```notes
+This closes the loop with slide one's claim that manufacturing has "the
+accounting other domains lack" — here's the actual accounting, not just
+the assertion that one exists.
+```
+
+---
+
+## The counter-example: designing the multiplier out
+
+If catching a defect earlier is worth roughly a hundred times more than
+catching it late, the rational response isn't just admitting that — it's
+building a system that refuses to let a defect travel forward at all.
+
+Toyota's own description of *jidoka*:
+
+> "When an abnormality occurs... the machine or equipment can detect the
+> abnormality and stop automatically, or the operator can stop the line
+> by pulling the stop cord themselves... This eliminates the outflow of
+> defective products."
+
+[Read Toyota's own account →](https://global.toyota/en/company/vision-and-philosophy/production-system/index.html)
+
+An andon cord is the cost curve, acted on: it forces every defect to be
+caught at 1x, by making it organisationally impossible to let one reach
+2x.
+
+```notes
+This is the thesis's own implication taken seriously, not a new example
+of the same claim — if the earlier stages really are that much cheaper,
+building a mechanism that refuses to skip them is the logical next
+move, and it's one real manufacturers actually built.
+```
+
+---
+
+## What four unrelated sources agree on
+
+A peer-reviewed replication, a national economic-impact study, an
+engineering-education paper, and four separate accident investigations —
+different methods, different decades, different countries — all land on
+the same structural claim:
+
+- The multiplier is real, even where the famous chart wasn't.
+- It falls hardest on whoever is downstream of the mistake.
+- It compounds specifically because of what got built on top of the
+  defect before anyone found it.
+- The only design that reliably beats it is one that refuses to let a
+  defect travel past the stage it was made in.
+
+```notes
+This slide has no new citation of its own — it's the synthesis of the
+eight sources already cited across this run, and it's the bridge to the
+closing slide's meta-point about verification.
+```
+
+---
+
+{/* _class: impact */}
+
+# The chart needed its own last mile
+
+**Manufacturing's version of "the last mile is expensive" looked
+finished — a number, a source, decades of citations. It took someone
+tracing the citation trail instead of trusting it before any of it could
+actually be trusted.**
+
+```notes
+Land here, not on the 100x number. The real lesson of this week isn't
+the multiplier, it's that even a peer-reviewed, replicated number still
+needed its own verification pass before anyone should have leaned on it
+— which is this course's argument, one level up.
 ```
