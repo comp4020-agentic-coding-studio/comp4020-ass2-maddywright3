@@ -18,6 +18,30 @@ interface Row {
   detail?: string;
 }
 
+// Labs are due every teaching week (5pm the Friday of that week — see
+// src/content/assessments/labs.md), not once at the end of semester, so they
+// get one schedule row per week rather than the single aggregate row the
+// generic assessments mapping below would otherwise produce.
+const labsEntry = assessments.find((entry) => entry.id === "labs");
+const otherAssessments = assessments.filter((entry) => entry.id !== "labs");
+
+const labRows: Row[] = labsEntry
+  ? lectures
+      .filter((entry) => entry.data.week !== null)
+      .map((entry) => {
+        const due = new Date(entry.data.date);
+        due.setUTCDate(due.getUTCDate() + 4); // Friday of the same teaching week
+        return {
+          date: due,
+          week: entry.data.week,
+          kind: "Assessment due",
+          title: `Lab — Week ${entry.data.week}`,
+          href: `/assessments/${labsEntry.id}/`,
+          detail: `part of Labs, ${labsEntry.data.weight}% total`,
+        };
+      })
+  : [];
+
 const rows: Row[] = [
   ...lectures.map((entry) => ({
     date: entry.data.date,
@@ -33,7 +57,7 @@ const rows: Row[] = [
     title: entry.data.title,
     href: `/sessions/${entry.id}/`,
   })),
-  ...assessments.map((entry) => ({
+  ...otherAssessments.map((entry) => ({
     date: entry.data.due,
     week: entry.data.week,
     kind: "Assessment due",
@@ -41,11 +65,12 @@ const rows: Row[] = [
     href: `/assessments/${entry.id}/`,
     detail: `${entry.data.weight}%`,
   })),
+  ...labRows,
   {
     date: new Date("2027-04-05T00:00:00Z"),
     week: null,
     kind: "Break",
-    title: "Mid-semester teaching break (5–18 April, ANU calendar)",
+    title: "Mid-semester teaching break (5–18 April)",
     href: null,
   },
 ].sort((a, b) => a.date.getTime() - b.date.getTime());

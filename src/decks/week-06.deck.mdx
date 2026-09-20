@@ -1,0 +1,84 @@
+---
+title: Ship It, Then Pay the Hundred-x
+description:
+  The claimed statistic, how it got debunked, and the real, surviving
+  number underneath it
+---
+
+{/* _class: impact */}
+
+# 1x → 6.5x → 15x → 100x
+
+**The chart everyone in software has seen at least once.**
+
+---
+
+## The claim
+
+Cost to fix a defect, by the stage you catch it at:
+
+| Stage | Multiplier |
+| --- | --- |
+| Design | 1x |
+| Implementation | 6.5x |
+| Testing | 15x |
+| After release | 60–100x |
+
+Usually credited to something called the **"IBM Systems Sciences Institute."**
+
+```notes
+Ask the room: who's seen this chart before, in a lecture or a blog post?
+Most hands go up. That's the setup for the next slide.
+```
+
+---
+
+{/* _class: quote */}
+
+## The problem
+
+> "The 'IBM Systems Sciences Institute' study has never been produced."
+
+Software researchers Hillel Wayne and Laurent Bossavit traced the citation
+trail back through decades of textbooks. It dead-ends in 1981 internal IBM
+training notes, with no public dataset behind them.
+
+A number that got laundered into "settled research" by being repeated —
+not by being re-measured.
+
+---
+
+## What actually survives
+
+**Boehm and Basili, 2001, peer-reviewed, *IEEE Computer*:**
+
+Fixing a defect after delivery runs roughly **100x** more expensive than
+catching it at requirements/design — on *large* projects. Their own paper
+adds the caveat: closer to **5:1** on small, non-critical ones.
+
+The order of magnitude held up under independent replication. The
+impressive-sounding institute's name did not.
+
+---
+
+## Why this is a week 6 slide, not a footnote
+
+A course built on finishing things properly can't cite a stat that never
+finished being checked.
+
+The multiplier in this week's slider is unit-less on purpose — every
+dollar-denominated version we could find traces back to the same
+unverifiable IBM lineage. The honest number is a ratio, not a price.
+
+---
+
+{/* _class: centered */}
+
+## Trace the citation trail yourself
+
+![qr](https://www.theregister.com/2021/07/22/bugs_expense_bs/)
+
+```notes
+The QR code is the citation-laundering writeup itself — worth having up
+while you make this point, not just citing it verbally.
+```

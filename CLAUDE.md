@@ -172,10 +172,34 @@ Enforced by:
 
 ## Slide decks
 
-Only week 1 ships a slide deck — the one lecture that needs a synchronous,
-presenter-led framing session for the whole course's argument. The other
-eleven weeks' framing lives on the page next to that week's interactive
-mechanic. The published spec only requires at least one lecture to link a
-deck that builds (`spec/assignment-2.test.ts`); "only week 1" is a scope
-decision, not a spec requirement, so it doesn't get its own mechanical
+Weeks 1, 6, and 12 ship a slide deck: week 1 for the synchronous,
+presenter-led framing session that sets up the whole course's argument,
+week 6 for the claim/debunk/surviving-finding narrative around the
+defect-cost multiplier, and week 12 for the per-domain callback slides that
+build to the synthesis statement. Other weeks' framing lives on the page
+next to that week's interactive mechanic, and don't need a deck unless a
+similar synchronous, presenter-led case for one comes up. The published spec
+only requires at least one lecture to link a deck that builds
+(`spec/assignment-2.test.ts`); which weeks get a deck beyond that one is a
+scope decision, not a spec requirement, so it doesn't get its own mechanical
 check.
+
+## Attachments and slides must be PDF
+
+Any downloadable attachment or slide file linked from course content — a
+guest speaker's slides, a handout, anything that isn't itself a page on the
+site — must be a PDF, never a proprietary format (`.pptx`, `.key`, `.doc`)
+that requires specific software to open. This doesn't apply to the
+in-browser Reveal.js decks under `src/decks/`, which are pages, not
+attachments.
+
+## Verify links before referencing them
+
+Before adding any URL anywhere on the site — a `links:` entry, an inline
+body link, a QR code target — actually check that it resolves (a real
+fetch, not just a plausible-looking URL shape). If a link can't be
+confirmed as working, say so and ask rather than referencing it anyway or
+swapping in a different, unverified source silently. This is the authoring-
+time version of what `spec/external-links.test.ts` already checks at build
+time (see External sources, above); doing it before the link is committed
+catches the problem before it ever reaches CI.
