@@ -35,6 +35,9 @@ const { heading, headingId, startTarget, jumpAmount } = Astro.props;
   <p class="lm-goalpost-readout" data-lm-goalpost-readout aria-live="polite">
     Target: {startTarget}%. Attempts: 0.
   </p>
+  <button type="button" class="lm-goalpost-reset" data-lm-goalpost-reset>
+    Reset the chase
+  </button>
 </section>
 
 <style>
@@ -89,6 +92,21 @@ const { heading, headingId, startTarget, jumpAmount } = Astro.props;
     border: 1px dashed var(--at-border);
     font-weight: 600;
   }
+
+  .lm-goalpost-reset {
+    margin-block-start: var(--at-spacing-sm);
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    padding: var(--at-spacing-xs) var(--at-spacing-md);
+    background: var(--at-bg);
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .lm-goalpost-reset:hover {
+    background: var(--at-bg-alt);
+  }
 </style>
 
 <script>
@@ -102,7 +120,8 @@ const { heading, headingId, startTarget, jumpAmount } = Astro.props;
     const fill = root.querySelector<HTMLElement>("[data-lm-goalpost-fill]");
     const marker = root.querySelector<HTMLElement>("[data-lm-goalpost-marker]");
     const readout = root.querySelector<HTMLElement>("[data-lm-goalpost-readout]");
-    if (!input || !fill || !marker || !readout) return;
+    const resetButton = root.querySelector<HTMLButtonElement>("[data-lm-goalpost-reset]");
+    if (!input || !fill || !marker || !readout || !resetButton) return;
 
     let target = startTarget;
     let attempts = 0;
@@ -110,7 +129,17 @@ const { heading, headingId, startTarget, jumpAmount } = Astro.props;
     function render(progress: number) {
       fill!.style.width = `${progress}%`;
       marker!.style.left = `${Math.min(100, target)}%`;
-      readout!.textContent = `Target: ${target}%. Attempts: ${attempts}.`;
+      readout!.textContent =
+        target > 100
+          ? `Target: ${target}% — that's past what this slider can even reach. Attempts: ${attempts}. That's the point: reset it and it'll happen again.`
+          : `Target: ${target}%. Attempts: ${attempts}.`;
+    }
+
+    function reset() {
+      target = startTarget;
+      attempts = 0;
+      input!.value = "0";
+      render(0);
     }
 
     input.addEventListener("input", () => {
@@ -121,6 +150,8 @@ const { heading, headingId, startTarget, jumpAmount } = Astro.props;
       }
       render(progress);
     });
+
+    resetButton.addEventListener("click", reset);
 
     render(0);
   }

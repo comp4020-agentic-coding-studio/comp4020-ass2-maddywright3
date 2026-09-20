@@ -104,6 +104,39 @@ Enforced by:
   actually good, or actually interactive — that's a browser check, same as
   slide legibility already is.
 
+## Stateful mechanics need a way back to the start
+
+A mechanic that accumulates state across interactions (attempts, a moving
+target, anything that isn't purely a function of the current slider value)
+can drift into a state its own input control can no longer reach — and then
+it goes quietly, permanently unresponsive for the rest of that pageview,
+with no error and nothing visibly wrong in the markup or the event wiring.
+
+This actually happened: the week 8 moving-goalpost widget grew its target by
+a fixed jump every time it was caught (`target = target + jumpAmount`), but
+the range input driving it was capped at 100. With week 8's real numbers
+(start 90, jump 8), the target passed 100 after just two catches, and from
+then on no drag position could ever satisfy "progress >= target" again. The
+event listener was never the problem — it stayed attached and kept firing
+correctly. The bug was that the value it compared against had walked outside
+the range the control could ever produce. It looked exactly like "stopped
+responding after the first use, and scrolling away and back doesn't fix it"
+— because scrolling was never involved; the state doesn't reset just because
+the element leaves and re-enters the viewport, so once it's stuck, it stays
+stuck until the page reloads.
+
+- Any mechanic where interacting can move a comparison value (a target, a
+  threshold, a counter) has to either keep that value inside the range its
+  own input can reach, or give the visitor an explicit, visible way back to
+  the start (a reset control) once it doesn't. Don't rely on a full page
+  reload as the only escape hatch.
+- When state does reach an end condition the input can't undo, say so in the
+  live-updating text, rather than leaving the visitor to guess whether it's
+  broken or finished.
+- This is a reason to actually operate each stateful mechanic through several
+  cycles by hand (not just click once and confirm it moved) before trusting
+  it — a single interaction won't surface a state a few steps down the line.
+
 ## External sources
 
 - Every lecture needs at least one `links:` entry pointing at a real,
