@@ -66,6 +66,9 @@ export const collections = {
           .string()
           .regex(/^\/decks\/[a-z0-9-]+\/$/)
           .optional(),
+        // The thesis test (see CLAUDE.md): this week's one-sentence case for
+        // the course thesis, in this week's domain.
+        angle: z.string().trim().min(40).max(200),
       })
       .loose(),
   }),
