@@ -1,8 +1,9 @@
 ---
 title: Assignment 1
 description:
-  The first piece of graded work — a placeholder brief showing the shape every
-  assessment page follows
+  The first graded checkpoint — find something real and unfinished, and
+  name specifically why its last mile is expensive, using the frameworks
+  from weeks 1 through 6
 week: 6
 due: 2027-04-02T17:00:00+10:00
 weight: 30
@@ -14,33 +15,36 @@ marking:
     - name: Quality of execution
       weight: 40
 spec:
+  - names a specific, real unfinished thing — not a hypothetical one, and
+    not one invented to fit the brief
+  - identifies the specific last-mile cost that thing carries, not just
+    that it "took a while" or "isn't done yet"
+  - draws explicitly on at least one framework from weeks 1–6
   - submitted by the deadline, in the format named below
-  - it does the thing the brief asks for, and a reader can tell that it does
-  - the work is yours, with any assistance declared
 related:
   - final-project
 ---
 
-<!-- STARTER_CONTENT: replace this assessment brief, then remove this comment. -->
-
-Replace this brief. An assessment page has three jobs: pose the problem, say
-what is submitted, and say how it is marked.
-
 ## The brief
 
-> One sentence stating the problem, set as a blockquote so it reads as the thing
-> being asked rather than as commentary on it.
+> Find something unfinished — yours, or one you go find — and diagnose
+> exactly where its last mile lives and why crossing it is expensive.
 
-Then a paragraph or two on what makes a strong response --- the room the brief
-leaves, and the judgement it is testing. Keep the provocation and the mechanics
-apart: a student should be able to read the first and know what to make, and
-read the second and know what to hand in.
+This is not a survey of the lectures. Pick one real thing: a project you
+started and stalled on, a friend's business that never quite launched, an
+open-source tool that's "basically done" and has been for a year. Then use
+this course's own distinction — slow versus expensive — to say precisely
+what makes finishing *this* thing costly, not just tedious. "The fix touches
+the thing everyone else already built on" is the kind of answer this brief
+is asking for; "it takes a while" is not.
+
+You get to choose the thing. You don't get to choose vague terms for why
+it's stuck.
 
 ## What you submit
 
-Name the artefact and the format. If evidence of process is part of the
-submission, say which files and what each is for.
-
-The optional `marking:` block renders a criterion table (weighted) or a marking
-statement (holistic) below; leave it out and say how the work is marked in
-prose.
+A written diagnosis, 1,200–1,800 words: what the thing is, what "finished"
+would actually look like for it, and — using at least one week's framework
+by name — exactly what makes its last mile expensive rather than merely
+slow. If the thing has a public trace (a repo, a listing, a draft), link to
+it as evidence you're diagnosing something real.

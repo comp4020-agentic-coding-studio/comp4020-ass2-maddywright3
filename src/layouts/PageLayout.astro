@@ -1,8 +1,17 @@
 ---
 import MdxPageLayout from "astro-theme-university/layouts/MdxPageLayout.astro";
 import { siteConfig } from "../site-config";
+
+// This site's content frontmatter reuses `links:` for citation sources (see
+// CLAUDE.md's external-sources rule). MdxPageLayout forwards every
+// frontmatter field straight through to BaseLayout/Nav, so a page's own
+// `links:` would silently replace the site nav's links. Drop it here.
+const { frontmatter, ...direct } = Astro.props;
+const source = frontmatter ?? direct;
+const { links, ...rest } = source;
+const forwarded = frontmatter ? { ...direct, frontmatter: rest } : rest;
 ---
 
-<MdxPageLayout siteConfig={siteConfig} {...Astro.props}>
+<MdxPageLayout siteConfig={siteConfig} {...forwarded}>
   <slot />
 </MdxPageLayout>

@@ -1,38 +1,50 @@
 ---
 title: Final project
 description:
-  The capstone — a placeholder brief for the larger piece of work the semester
-  builds towards
+  The capstone — actually finish the thing you diagnosed in Assignment 1
+  (or a new one), and account for why the last mile was the expensive part
 week: 12
 due: 2027-05-28T12:00:00+10:00
 weight: 50
 marking:
   mode: holistic
   description:
-    The final project is judged as a whole against the brief, with particular
-    attention to whether the result stands alone and whether its scope fits the
-    semester that produced it.
+    The final project is judged as a whole against the brief — whether the
+    thing submitted is genuinely finished rather than merely further along,
+    whether the account of its last mile is specific rather than generic,
+    and whether it stands on its own without you there to explain it.
 spec:
-  - submitted by the deadline, in the format named below
+  - the thing is actually finished, not just further along than it was —
+    you can reuse Assignment 1's subject, but the diagnosis alone doesn't
+    carry this assessment
+  - the write-up names the specific last-mile cost you had to cross, using
+    at least two of this course's twelve domains as reference points
   - it stands on its own, without you there to explain it
-  - it answers the brief rather than restating it
+  - submitted by the deadline, in the format named below
+related:
+  - assignment-1
 ---
-
-<!-- STARTER_CONTENT: replace this assessment brief, then remove this comment. -->
-
-Replace this brief. The final project is where a course's weights usually
-concentrate, so it is worth being explicit about how the earlier work feeds it.
 
 ## The brief
 
-> One sentence, again as a blockquote.
+> Finish something. Then explain, using this course's own framework, why
+> finishing it was the expensive part.
 
-Say what scope is realistic in the time available. A brief that quietly assumes
-twice the available hours is the most common way a capstone goes wrong.
+You can carry forward the thing you diagnosed in Assignment 1, or pick a
+new one — but this assessment is about crossing a real last mile, not
+describing one from a safe distance. If you reuse Assignment 1's subject,
+the bar is higher, not lower: we already know what was wrong with it: did
+you actually fix it?
+
+Scope this realistically for the time you have. A capstone that quietly
+assumes twice the available hours is the single most common way this
+assignment goes wrong, and it's the same mistake week 6 spends its own
+lecture warning manufacturing teams against.
 
 ## What you submit
 
-The artefact, and whatever a marker needs to run or read it.
-
-This one demonstrates the alternative marking mode: a holistic explanation
-rather than weighted criteria. The site renders either mode from frontmatter.
+The finished artefact itself — or, where the artefact can't be submitted
+directly (a shipped product, a completed process, a delivered thing),
+evidence that it's actually done. Alongside it, a written account,
+1,500–2,000 words, naming the specific last-mile cost you crossed and
+connecting it explicitly to at least two domains this course covered.
