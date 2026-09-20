@@ -69,6 +69,15 @@ export const collections = {
         // The thesis test (see CLAUDE.md): this week's one-sentence case for
         // the course thesis, in this week's domain.
         angle: z.string().trim().min(40).max(200),
+        // Interactive mechanics (see CLAUDE.md): which mechanic this week's
+        // page ships. "other" covers the two bespoke, domain-forced builds
+        // (moving goalpost, polish curve) rather than mis-fitting them into
+        // diagram/calculator/cost-curve.
+        mechanic: z.enum(["diagram", "calculator", "cost-curve", "quiz", "other"]),
+        // External sources (see CLAUDE.md): overrides the platform default
+        // of an optional, possibly-empty list — a lecture needs at least one
+        // real, verified source connected to its specific claim.
+        links: z.array(z.object({ label: z.string(), url: z.url() })).min(1),
       })
       .loose(),
   }),
