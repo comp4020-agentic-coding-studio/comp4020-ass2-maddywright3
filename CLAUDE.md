@@ -146,6 +146,18 @@ stuck until the page reloads.
   for a decision, not filled in with a plausible-sounding guess.
 - A link's URL shape being valid doesn't mean the source is real or
   relevant — that's still a human read before it's committed.
+- Every `links` entry must point to a primary or authoritative source: a
+  peer-reviewed paper, a primary organisation's own publication (NASA,
+  Boeing, the ABA, the Council of Graduate Schools, etc.), an original
+  essay or talk by its actual author, or similarly citable material. Do
+  not use Wikipedia, or any other collaboratively or easily user-edited
+  reference site, as a source anywhere on the site.
+- When proposing a source, state in one line why it counts as primary or
+  authoritative under this rule — the reasoning has to be visible
+  alongside the citation, not left implicit.
+- If no primary source can be found for a claim, say so and ask whether to
+  soften the claim or drop it, rather than falling back to a secondary or
+  easily-edited source.
 
 Enforced by:
 - `src/content.config.ts` — `links` is required, at least one entry, on the
