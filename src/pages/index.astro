@@ -5,9 +5,6 @@ import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
 import heroImage from "../assets/images/hero-home.avif";
 import { courseMeta } from "../course-config";
 import { sessionLabels, siteConfig } from "../site-config";
-
-// STARTER_CONTENT: replace the hero artwork and its alt text below, then
-// remove this comment.
 ---
 
 <ContentLayout
@@ -21,17 +18,30 @@ import { sessionLabels, siteConfig } from "../site-config";
     {courseMeta.tags.map((tag) => <li>{tag}</li>)}
   </ul>
 
-  <!-- STARTER_CONTENT: replace the authored page below, then remove this comment. -->
   <h2>What you will do</h2>
   <p>
-    Say what a student spends their time on — the making, reading, arguing or
-    measuring that fills the weeks. Name the artefact they walk out with.
+    You'll spend most weeks doing the same three things in a new domain:
+    read a real case where finishing turned out to be the hard part,
+    manipulate a small interactive model of that domain's specific cost
+    curve, and argue, in writing, why that domain's version of the problem is
+    or isn't like the others we've already covered. Two weeks break the
+    pattern on purpose, one where the thesis stops applying and you have to
+    say why, and a synthesis week where you stop collecting cases and start
+    building your own framework. You walk out with a "last-mile audit", a
+    real, unfinished thing you know personally, analysed using the framework
+    the course built with you.
   </p>
 
   <h2>Who it is for</h2>
   <p>
-    Say who this is aimed at and what they need to already know. Be specific
-    enough that someone can rule themselves in or out without emailing you.
+    This is for anyone who has ever shipped something they were secretly
+    embarrassed to call finished, and wants a better vocabulary for why. No
+    prerequisites in any specific domain, weeks cover software, law,
+    aerospace, and hospitality with equal seriousness, but you do need to be
+    comfortable reading a real case study and arguing with it in writing, not
+    just summarising it. If you want a course that stays comfortably in one
+    field, this isn't it, if you want one argument tested against eleven
+    different kinds of evidence, it is.
   </p>
 
   <h2>Where to go next</h2>

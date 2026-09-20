@@ -17,7 +17,10 @@ export const slopCourseMetaSchema = z
     level: z.literal(LEVELS),
     startDate: z.iso.date(),
     endDate: z.iso.date(),
-    description: z.string().trim().min(80).max(300),
+    // Doubles as the SEO meta description and the homepage's lead
+    // paragraph (see ContentLayout), so the upper bound is generous
+    // enough for a real opening argument, not just a one-line summary.
+    description: z.string().trim().min(80).max(800),
     tags: z.array(z.string().trim().min(2).max(24)).min(1).max(3),
   })
   .superRefine((course, ctx) => {
@@ -40,23 +43,28 @@ export const slopCourseMetaSchema = z
 
 // The single source of truth for the course record. The generated homepage,
 // navigation label and /api/index.json all read this object.
-// Replace every placeholder value, but keep the shape: the catalogue ingests
-// this API contract when the course is published.
 //
 // The code's last three digits were assigned to this repo when it was
 // provisioned, and no other course in the cohort has them. Change the first
 // digit to your course's level (and `level` to match); keep the other three.
-// STARTER_CONTENT: replace this course record, then remove this comment.
 export const courseMeta = slopCourseMetaSchema.parse({
   code: "SLOP1241",
-  title: "Course Title Goes Here",
+  title: "The Last Mile",
   session: "Semester 1",
   year: 2027,
   level: 1,
   startDate: "2027-02-22",
   endDate: "2027-05-28",
   description:
-    "One concise paragraph explaining what this course is, who it is for, " +
-    "and why somebody would choose to spend a semester taking it.",
-  tags: ["replace me"],
+    "Every project you've ever finished had a moment where it was 90% done " +
+    "and somehow still cost half its budget to close out. SLOP1241 is built on " +
+    "a single argument: finishing is a different skill from building, and " +
+    "almost everyone is worse at it. Across twelve weeks we chase that argument " +
+    "through eleven unrelated domains, why a rural broadband connection's last " +
+    "customer costs as much as all the others combined, why a peer-reviewed " +
+    "defect-cost multiplier gets misattributed to a study that never existed, " +
+    "why 98% of a building is legally a different object to 100% of one, and " +
+    "we end up with something more useful than a slogan: a working theory of " +
+    "where your own last mile is hiding, and why you keep underestimating it.",
+  tags: ["Case-based", "Cross-domain"],
 }) satisfies CourseMetaInput;

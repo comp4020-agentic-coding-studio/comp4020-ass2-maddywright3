@@ -203,3 +203,26 @@ swapping in a different, unverified source silently. This is the authoring-
 time version of what `spec/external-links.test.ts` already checks at build
 time (see External sources, above); doing it before the link is committed
 catches the problem before it ever reaches CI.
+
+## No placeholder text
+
+Nothing scaffold-generated ships on a real page: no "Course Title Goes
+Here", no "replace me" tag pill, no lorem ipsum, no `STARTER_CONTENT`
+comment left dangling because the real copy went in next to it but the
+marker never got deleted. If a value still reads like an instruction to
+whoever is setting up the course, rather than actual course content, it
+hasn't shipped yet — it's still scaffolding.
+
+- Replacing the content a `STARTER_CONTENT` comment points at means
+  deleting the comment itself in the same edit, not leaving it behind as
+  a stale note once the real copy is in.
+- This applies sitewide, not just to `lectures` entries — the home page,
+  nav labels, tags, and course metadata (`src/course-config.ts`) all
+  count.
+
+Enforced by:
+- `spec/no-placeholder-text.test.ts` — greps every source file under
+  `src/` for the literal `STARTER_CONTENT` scaffold marker and fails if
+  any survive. It can only catch a placeholder that carried that marker
+  — an invented tag or a vague sentence with no marker on it is still a
+  human read.
