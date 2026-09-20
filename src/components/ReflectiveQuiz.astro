@@ -1,0 +1,133 @@
+---
+interface QuizDomain {
+  id: string;
+  label: string;
+  question: string;
+  resultMessage: string;
+}
+
+interface Props {
+  heading: string;
+  headingId: string;
+  domains: QuizDomain[];
+}
+
+const { heading, headingId, domains } = Astro.props;
+---
+
+<section class="lm-quiz" data-last-mile-mechanic="quiz" aria-labelledby={headingId}>
+  <h2 id={headingId}>{heading}</h2>
+  <fieldset class="lm-quiz-fieldset">
+    <legend>Which of these last-mile problems have you personally hit?</legend>
+    <ul class="lm-quiz-list">
+      {domains.map((domain) => (
+        <li>
+          <label>
+            <input
+              type="checkbox"
+              data-lm-quiz-domain
+              data-domain-id={domain.id}
+              data-result-message={domain.resultMessage}
+            />
+            <span class="lm-quiz-domain-label">{domain.label}</span>
+            <span class="lm-quiz-question">{domain.question}</span>
+          </label>
+        </li>
+      ))}
+    </ul>
+  </fieldset>
+  <button type="button" data-lm-quiz-submit>See results</button>
+  <div class="lm-quiz-results" data-lm-quiz-results aria-live="polite"></div>
+</section>
+
+<style>
+  .lm-quiz {
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    padding: var(--at-spacing-lg);
+    background: var(--at-bg-alt);
+  }
+
+  .lm-quiz-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lm-quiz-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--at-spacing-sm);
+  }
+
+  .lm-quiz-list label {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--at-spacing-sm);
+    align-items: baseline;
+  }
+
+  .lm-quiz-domain-label {
+    font-weight: 600;
+  }
+
+  .lm-quiz-question {
+    grid-column: 2;
+    color: var(--at-text-secondary);
+    font-size: var(--at-font-size-sm);
+  }
+
+  .lm-quiz button {
+    font: inherit;
+    margin-block-start: var(--at-spacing-md);
+    padding: var(--at-spacing-sm) var(--at-spacing-md);
+    border-radius: var(--at-border-radius);
+    border: 1px solid var(--at-primary);
+    background: var(--at-primary);
+    color: var(--at-on-primary);
+    cursor: pointer;
+  }
+
+  .lm-quiz-results {
+    margin-block-start: var(--at-spacing-md);
+  }
+
+  .lm-quiz-results ul {
+    padding-inline-start: var(--at-spacing-lg);
+  }
+</style>
+
+<script>
+  function initializeQuiz(root: HTMLElement) {
+    if (root.dataset.lmQuizInitialized === "true") return;
+    root.dataset.lmQuizInitialized = "true";
+
+    const submit = root.querySelector<HTMLButtonElement>("[data-lm-quiz-submit]");
+    const results = root.querySelector<HTMLElement>("[data-lm-quiz-results]");
+    const checkboxes = [...root.querySelectorAll<HTMLInputElement>("[data-lm-quiz-domain]")];
+    if (!submit || !results) return;
+
+    submit.addEventListener("click", () => {
+      const checked = checkboxes.filter((checkbox) => checkbox.checked);
+      if (checked.length === 0) {
+        results.textContent = "You have not hit any of these yet — or haven't noticed.";
+        return;
+      }
+      const items = checked
+        .map((checkbox) => `<li>${checkbox.dataset.resultMessage ?? ""}</li>`)
+        .join("");
+      results.innerHTML = `<p>You hit ${checked.length} of ${checkboxes.length}:</p><ul>${items}</ul>`;
+    });
+  }
+
+  function initializeQuizzes() {
+    document
+      .querySelectorAll<HTMLElement>('[data-last-mile-mechanic="quiz"]')
+      .forEach((root) => initializeQuiz(root));
+  }
+
+  initializeQuizzes();
+  document.addEventListener("astro:page-load", initializeQuizzes);
+</script>

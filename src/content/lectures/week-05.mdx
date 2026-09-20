@@ -1,0 +1,71 @@
+---
+title: The Filing You Didn't Make Is the Only One That Matters
+description:
+  A case can be argued flawlessly and still be lost entirely to a
+  calendar entry nobody double-checked — why legal work's last mile is
+  administrative, not intellectual
+angle:
+  In legal practice the last mile is expensive because a case can be won on
+  every substantive argument and still be destroyed completely by one
+  missed date on a calendar nobody was watching.
+mechanic: calculator
+links:
+  - label: "Texas Lawyers' Insurance Exchange: Scheduling Errors and Legal Malpractice"
+    url: https://www.tlie.org/resource/scheduling-errors-and-legal-malpractice
+week: 5
+date: 2027-03-22
+teachers:
+  - marisol-quaye
+related:
+  - week-04
+---
+
+import LastMileCalculator from "../../components/LastMileCalculator.astro";
+
+Lawyers spend years training to argue. Almost none of that training goes
+into the thing that actually ends the most careers: the calendar.
+Malpractice insurers who track claims by cause consistently put missed
+deadlines — filing statutes of limitations, response windows, appeal
+periods — among the single largest categories of claims against
+attorneys, with figures in various studies ranging from roughly a
+quarter to as much as a third or more of all claims tracing back to a
+date that simply wasn't calendared, or was calendared and then not
+acted on. That's a strange place for a profession built on argument to
+be losing the most cases: not on the law, but on scheduling.
+
+Here's why this last mile is uniquely unforgiving compared to every
+other domain this course has looked at. In software, a shortcut you took
+gets more expensive the longer it sits — but it's still, in principle,
+fixable. In law, a missed filing deadline is frequently not fixable at
+all. Statutes of limitations don't offer a grace period for good
+argument; miss the date and the claim is often gone regardless of its
+merits. The "cost" of the last mile here isn't a steep number, it's a
+step function: negligible right up until the deadline, and then total.
+
+<LastMileCalculator
+  heading="Malpractice exposure as a filing deadline approaches"
+  headingId="week-05-calculator"
+  unitLabel="% of the filing window elapsed"
+  resultLabel="Relative malpractice exposure if the deadline is missed from here"
+  curve={[
+    { percent: 0, cost: 1 },
+    { percent: 50, cost: 2 },
+    { percent: 80, cost: 5 },
+    { percent: 95, cost: 15 },
+    { percent: 99, cost: 40 },
+    { percent: 100, cost: 100 },
+  ]}
+/>
+
+The complication this adds to the thesis: not every last mile rewards
+"try harder." A firm can be excellent at the law itself — the 90% that
+looks like the hard part to an outsider — and still be destroyed by the
+10% that looks like paperwork. That's precisely why disciplined firms
+treat deadline tracking as its own system, separate from case
+strategy: dedicated docketing software, redundant calendar entries, a
+second person who checks the first person's dates. The lesson
+generalizes: when a last-mile failure is irreversible rather than merely
+costly, the right response isn't more diligence from the same person who
+was already trying — it's redundancy built by design, because a step
+function doesn't forgive a single missed step no matter how good
+everything before it was.

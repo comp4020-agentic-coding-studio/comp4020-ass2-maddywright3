@@ -1,0 +1,133 @@
+---
+interface CurvePoint {
+  percent: number;
+  cost: number;
+}
+
+interface Props {
+  heading: string;
+  headingId: string;
+  unitLabel: string;
+  resultLabel: string;
+  curve: CurvePoint[];
+}
+
+const { heading, headingId, unitLabel, resultLabel, curve } = Astro.props;
+const sortedCurve = [...curve].sort((a, b) => a.percent - b.percent);
+---
+
+<section
+  class="lm-calculator"
+  data-last-mile-mechanic="calculator"
+  aria-labelledby={headingId}
+  data-curve={JSON.stringify(sortedCurve)}
+>
+  <h2 id={headingId}>{heading}</h2>
+  <label class="lm-calculator-label" for={`${headingId}-input`}>
+    Percent complete
+  </label>
+  <input
+    id={`${headingId}-input`}
+    type="number"
+    min="0"
+    max="100"
+    step="1"
+    value="90"
+    data-lm-calc-input
+  />
+  <p class="lm-calculator-result" data-lm-calc-result aria-live="polite">
+    {resultLabel}: enter a percentage above.
+  </p>
+  <p class="lm-calculator-hint">Measured in {unitLabel}.</p>
+</section>
+
+<style>
+  .lm-calculator {
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    padding: var(--at-spacing-lg);
+    background: var(--at-bg-alt);
+  }
+
+  .lm-calculator-label {
+    display: block;
+    font-weight: 600;
+    margin-block-end: var(--at-spacing-xs);
+  }
+
+  .lm-calculator input[type="number"] {
+    font: inherit;
+    width: 6rem;
+    padding: var(--at-spacing-xs) var(--at-spacing-sm);
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    background: var(--at-bg);
+    color: var(--at-text);
+  }
+
+  .lm-calculator-result {
+    margin-block-start: var(--at-spacing-md);
+    padding: var(--at-spacing-md);
+    border-radius: var(--at-border-radius);
+    background: var(--at-bg);
+    border: 1px dashed var(--at-border);
+    font-weight: 600;
+  }
+
+  .lm-calculator-hint {
+    color: var(--at-text-secondary);
+    font-size: var(--at-font-size-sm);
+  }
+</style>
+
+<script>
+  interface CurvePoint {
+    percent: number;
+    cost: number;
+  }
+
+  function interpolate(curve: CurvePoint[], percent: number): number {
+    const clamped = Math.max(curve[0].percent, Math.min(curve[curve.length - 1].percent, percent));
+    for (let i = 0; i < curve.length - 1; i++) {
+      const a = curve[i];
+      const b = curve[i + 1];
+      if (clamped >= a.percent && clamped <= b.percent) {
+        const span = b.percent - a.percent;
+        const ratio = span === 0 ? 0 : (clamped - a.percent) / span;
+        return a.cost + ratio * (b.cost - a.cost);
+      }
+    }
+    return curve[curve.length - 1].cost;
+  }
+
+  function initializeCalculator(root: HTMLElement) {
+    if (root.dataset.lmCalcInitialized === "true") return;
+    root.dataset.lmCalcInitialized = "true";
+
+    const curve = JSON.parse(root.dataset.curve ?? "[]") as CurvePoint[];
+    const input = root.querySelector<HTMLInputElement>("[data-lm-calc-input]");
+    const result = root.querySelector<HTMLElement>("[data-lm-calc-result]");
+    if (!input || !result || curve.length < 2) return;
+
+    const label = result.textContent?.split(":")[0] ?? "Estimate";
+
+    function update() {
+      const percent = Number(input!.value);
+      if (Number.isNaN(percent)) return;
+      const cost = interpolate(curve, percent);
+      result!.textContent = `${label}: ${cost.toFixed(1)} at ${percent}% complete`;
+    }
+
+    input.addEventListener("input", update);
+    update();
+  }
+
+  function initializeCalculators() {
+    document
+      .querySelectorAll<HTMLElement>('[data-last-mile-mechanic="calculator"]')
+      .forEach((root) => initializeCalculator(root));
+  }
+
+  initializeCalculators();
+  document.addEventListener("astro:page-load", initializeCalculators);
+</script>

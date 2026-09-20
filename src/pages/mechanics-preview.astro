@@ -1,0 +1,111 @@
+---
+import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
+import CostCurveSlider from "../components/CostCurveSlider.astro";
+import LastMileCalculator from "../components/LastMileCalculator.astro";
+import MovingGoalpostWidget from "../components/MovingGoalpostWidget.astro";
+import PolishCurveDial from "../components/PolishCurveDial.astro";
+import ProcessDiagram from "../components/ProcessDiagram.astro";
+import ReflectiveQuiz from "../components/ReflectiveQuiz.astro";
+import { siteConfig } from "../site-config";
+
+// Placeholder data only, to exercise each mechanic in isolation. No week's
+// real lecture content lives here.
+
+const diagramStages = [
+  { id: "design", label: "Design", isLastMileRisk: false, explanation: "Cheap to redo, cheap to get wrong." },
+  { id: "build", label: "Build", isLastMileRisk: false, explanation: "The bulk of the effort, but not where things stall." },
+  { id: "integrate", label: "Integrate", isLastMileRisk: true, explanation: "Where it meets everything already built — this is where the cost spikes." },
+  { id: "ship", label: "Ship", isLastMileRisk: false, explanation: "Fast once integration is actually done." },
+];
+
+const calculatorCurve = [
+  { percent: 0, cost: 1 },
+  { percent: 50, cost: 2 },
+  { percent: 90, cost: 4 },
+  { percent: 99, cost: 12 },
+  { percent: 100, cost: 20 },
+];
+
+const sliderCurve = [
+  { percent: 0, cost: 1 },
+  { percent: 70, cost: 3 },
+  { percent: 90, cost: 6 },
+  { percent: 100, cost: 25 },
+];
+
+const quizDomains = [
+  { id: "software", label: "Software", question: "Shipped a demo that never became a product?", resultMessage: "Software: the demo-to-product gap." },
+  { id: "infrastructure", label: "Infrastructure", question: "Left the last few customers unconnected?", resultMessage: "Infrastructure: the last mile got its name here." },
+  { id: "writing", label: "Academic writing", question: "Left a thesis without its conclusion?", resultMessage: "Writing: the conclusion nobody wrote." },
+];
+
+const polishCurve = [
+  { polish: 0, engineeringCost: 1, userValue: 1 },
+  { polish: 3, engineeringCost: 3, userValue: 4 },
+  { polish: 6, engineeringCost: 7, userValue: 5 },
+  { polish: 9, engineeringCost: 12, userValue: 2 },
+  { polish: 10, engineeringCost: 15, userValue: -3 },
+];
+---
+
+<ContentLayout
+  title="Interactive mechanics preview"
+  description="Isolated preview of the six last-mile interactive mechanics, with placeholder data only."
+  {...siteConfig}
+>
+  <p>
+    This page is not part of any week's content. It exists to check that each
+    interactive mechanic renders and responds to interaction before any real
+    lecture uses it.
+  </p>
+
+  <ProcessDiagram
+    heading="Process diagram (mechanic: diagram)"
+    headingId="preview-diagram"
+    stages={diagramStages}
+  />
+
+  <LastMileCalculator
+    heading="Last-mile calculator (mechanic: calculator)"
+    headingId="preview-calculator"
+    unitLabel="days of risk"
+    resultLabel="Estimated remaining risk"
+    curve={calculatorCurve}
+  />
+
+  <CostCurveSlider
+    heading="Cost-curve slider (mechanic: cost-curve)"
+    headingId="preview-slider"
+    curve={sliderCurve}
+  />
+
+  <ReflectiveQuiz
+    heading="Reflective quiz (mechanic: quiz)"
+    headingId="preview-quiz"
+    domains={quizDomains}
+  />
+
+  <MovingGoalpostWidget
+    heading="Moving goalpost (mechanic: other, week 8)"
+    headingId="preview-goalpost"
+    startTarget={90}
+    jumpAmount={5}
+  />
+
+  <PolishCurveDial
+    heading="Polish curve dial (mechanic: other, week 11)"
+    headingId="preview-dial"
+    curve={polishCurve}
+  />
+</ContentLayout>
+
+<style>
+  :global(.lm-diagram),
+  :global(.lm-calculator),
+  :global(.lm-slider),
+  :global(.lm-quiz),
+  :global(.lm-goalpost),
+  :global(.lm-dial) {
+    margin-block-end: var(--at-spacing-xl);
+  }
+</style>

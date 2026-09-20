@@ -1,0 +1,101 @@
+---
+title: The Last Customer Costs More Than All the Others Combined
+description:
+  Borrowing the term from telecoms and rail, we look at why running a line
+  99% of the way is cheap and the final stretch to every actual door is
+  where the budget dies
+angle:
+  Infrastructure is where "last mile" got its name, because connecting the
+  final customer costs as much as every customer that came before them put
+  together.
+mechanic: diagram
+links:
+  - label: "Last mile (telecommunications and infrastructure economics)"
+    url: https://en.wikipedia.org/wiki/Last_mile
+  - label: "NTCA: Rural Broadband Economics — A Review of Rural Subsidies"
+    url: https://www.ntca.org/sites/default/files/documents/2018-07/CQA-RuralBroadbandEconomics-AReviewofRuralSubsidies_FinalV07112018.pdf
+week: 2
+date: 2027-03-01
+teachers:
+  - idris-fenn
+related:
+  - sessions/02-first-review
+  - assessments/assignment-1
+  - week-01
+---
+
+import ProcessDiagram from "../../components/ProcessDiagram.astro";
+
+"Last mile" is a telecoms and rail term before it was ever a metaphor,
+and the literal version is worth taking seriously, because it's a cleaner
+demonstration of the thesis than software gives you. A software team's
+last mile is expensive because of decisions *they* made. A fiber
+operator's last mile is expensive because of geometry nobody chose:
+density falls as you move outward, and the network has to reach every
+point in the coverage area, including the ones with almost nobody on
+them.
+
+Here's the number that makes this concrete rather than vibes-based.
+Aerial fiber construction runs on the order of $40,000–$60,000 per mile
+before you've connected a single household to it. Spread that over a
+dense city block and it's nothing per customer. Spread it over the last
+few rural properties on a rural loop and the same mile of cable might
+serve one household. California's public utilities commission has
+literally paid $54,100 to connect a single unserved location under its
+broadband programs — compare that to a subsidized satellite alternative
+costing roughly $1,086 per location, a fifty-times difference, for
+exactly the same outcome: one more address that can get online. The 2021
+federal BEAD broadband program goes as far as defining an "Extremely High
+Cost Per Location Threshold" in its rules — an explicit, written-down
+admission that past some point per-customer cost stops being a curve you
+can budget for and becomes a number you have to decide whether to accept.
+
+<ProcessDiagram
+  heading="Where a broadband build actually gets expensive"
+  headingId="week-02-diagram"
+  stages={[
+    {
+      id: "backbone",
+      label: "Backbone / long-haul link",
+      isLastMileRisk: false,
+      explanation:
+        "Expensive in absolute terms, but the cost is shared across every customer the line will ever serve. Cheap per head.",
+    },
+    {
+      id: "middle-mile",
+      label: "Middle-mile distribution",
+      isLastMileRisk: false,
+      explanation:
+        "Still shared across a neighbourhood's worth of customers. Density is doing the work of keeping this affordable.",
+    },
+    {
+      id: "final-drop",
+      label: "Final drop to each remaining property",
+      isLastMileRisk: true,
+      explanation:
+        "One run of cable, one household. The cost stops being shared right when the customers get sparsest — this is the stage the BEAD program had to write a special rule for.",
+    },
+    {
+      id: "connected",
+      label: "Address connected",
+      isLastMileRisk: false,
+      explanation:
+        "The outcome is identical to every other connected address. Nothing about the result explains why this one cost fifty times more.",
+    },
+  ]}
+/>
+
+This is where the domain complicates the thesis rather than just
+restating it. In software, the last mile is expensive because of debt —
+shortcuts taken earlier that compound. Nobody took a shortcut here.
+Nobody cut a corner to make rural fiber expensive; the expense was baked
+in by the map before anyone laid a single conduit. That's a different
+species of last-mile cost: not the bill for corners cut, but the bill for
+a resource — density — that was never available to begin with. A team
+can avoid the software version by not taking the shortcuts. No fiber
+operator can avoid this version by planning better; the only tools
+available are subsidy, a cheaper technology for the hardest addresses, or
+accepting that some addresses stay unconnected. The lesson isn't "finish
+better." It's that some last miles are structural, not behavioural — and
+a course that only ever blamed procrastination or corner-cutting would
+be wrong about this one.

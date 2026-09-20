@@ -1,0 +1,73 @@
+---
+title: Final Approach Is Five Percent of the Flight and Half the Risk
+description:
+  Boeing's own decades of accident data show exactly where a flight's
+  last mile sits — a sliver of total flight time carrying roughly half
+  the fatal risk
+angle:
+  In aviation the last mile is expensive because final approach and
+  landing occupy a sliver of a flight's duration while accounting for
+  nearly half of all fatal accidents.
+mechanic: calculator
+links:
+  - label: "Boeing: Statistical Summary of Commercial Jet Airplane Accidents"
+    url: https://www.boeing.com/content/dam/boeing/v2/safety/statsum.pdf
+  - label: "Flight Safety Foundation: Nearly Half of Commercial Jet Accidents Occur During Final Approach, Landing"
+    url: https://flightsafety.org/asw-article/nearly-half-of-commercial-jet-accidents-occur-during-final-approach-landing/
+week: 10
+date: 2027-04-26
+teachers:
+  - idris-fenn
+related:
+  - week-09
+---
+
+import LastMileCalculator from "../../components/LastMileCalculator.astro";
+
+Boeing has published a Statistical Summary of Commercial Jet Airplane
+Accidents every year for decades, and the pattern in it has barely
+moved across editions. Across the 2004–2013 decade it covers, 22% of
+fatal accidents happened during final approach and 25% during landing —
+47% of all fatal accidents, and roughly 40% of onboard fatalities,
+concentrated into the two phases that, combined, last only a few minutes
+out of a multi-hour flight. Cruise, which is most of a flight's actual
+duration, accounted for only about 10% of fatal accidents. This isn't a
+one-off dataset either — the same concentration shows up in Boeing's
+1999–2008, 2009–2018, and 2013–2022 editions alike.
+
+That mismatch — minutes of flight time, half the fatal risk — is the
+specific, measurable version of this course's thesis that aviation
+supplies. It isn't that landing is technically harder than cruising in
+some vague sense; it's that landing is the phase where the aircraft is
+closest to the ground, closest to other traffic, and has the least room
+to recover from an error, all at once, right at the point where the
+flight is otherwise "basically done."
+
+<LastMileCalculator
+  heading="Relative fatal-accident risk by phase of flight"
+  headingId="week-10-calculator"
+  unitLabel="% of the flight complete"
+  resultLabel="Relative share of historical fatal-accident risk at this phase"
+  curve={[
+    { percent: 0, cost: 8 },
+    { percent: 15, cost: 6 },
+    { percent: 50, cost: 10 },
+    { percent: 80, cost: 22 },
+    { percent: 95, cost: 25 },
+    { percent: 100, cost: 4 },
+  ]}
+/>
+
+The complication for the thesis: aviation's whole safety culture is
+built around treating the last mile as categorically different, not
+just "a bit riskier," which is a stronger response than any other domain
+in this course has taken. Stabilised-approach criteria, go-around
+procedures, and mandatory landing checklists all exist specifically to
+make the final phase harder to rush, precisely because the industry's
+own long-run data says rushing it is where the fatal accidents
+concentrate. That's the opposite instinct from software's "ship the
+demo, harden later" or a startup's "hit this quarter's number" — aviation
+treats its last mile as the part you're least allowed to treat casually,
+not the part you're most tempted to. Every other domain in this course
+has had to learn that lesson the hard way, from a failure. Aviation
+built its entire procedural culture around already knowing it.

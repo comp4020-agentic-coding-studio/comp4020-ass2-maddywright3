@@ -1,0 +1,128 @@
+---
+interface Stage {
+  id: string;
+  label: string;
+  isLastMileRisk: boolean;
+  explanation: string;
+}
+
+interface Props {
+  heading: string;
+  headingId: string;
+  stages: Stage[];
+}
+
+const { heading, headingId, stages } = Astro.props;
+---
+
+<section
+  class="lm-diagram"
+  data-last-mile-mechanic="diagram"
+  aria-labelledby={headingId}
+>
+  <h2 id={headingId}>{heading}</h2>
+  <p class="lm-diagram-hint">Click a stage to see whether it is the last-mile risk point.</p>
+  <ol class="lm-diagram-stages">
+    {stages.map((stage) => (
+      <li>
+        <button
+          type="button"
+          class="lm-diagram-stage"
+          data-lm-diagram-stage
+          data-stage-id={stage.id}
+          data-explanation={stage.explanation}
+          data-risk={stage.isLastMileRisk ? "true" : "false"}
+          aria-expanded="false"
+        >
+          {stage.label}
+        </button>
+      </li>
+    ))}
+  </ol>
+  <p class="lm-diagram-panel" data-lm-diagram-panel aria-live="polite">
+    Select a stage above to see whether it is the last-mile risk point.
+  </p>
+</section>
+
+<style>
+  .lm-diagram {
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    padding: var(--at-spacing-lg);
+    background: var(--at-bg-alt);
+  }
+
+  .lm-diagram-hint {
+    color: var(--at-text-secondary);
+    font-size: var(--at-font-size-sm);
+    margin-block-start: 0;
+  }
+
+  .lm-diagram-stages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--at-spacing-sm);
+    list-style: none;
+    padding: 0;
+    margin-block: var(--at-spacing-md);
+  }
+
+  .lm-diagram-stage {
+    font: inherit;
+    padding: var(--at-spacing-sm) var(--at-spacing-md);
+    border-radius: var(--at-border-radius);
+    border: 1px solid var(--at-border);
+    background: var(--at-bg);
+    color: var(--at-text);
+    cursor: pointer;
+  }
+
+  .lm-diagram-stage:hover,
+  .lm-diagram-stage:focus-visible {
+    border-color: var(--at-primary);
+  }
+
+  .lm-diagram-stage[aria-expanded="true"] {
+    border-color: var(--at-primary);
+    background: var(--at-accent-soft);
+  }
+
+  .lm-diagram-panel {
+    padding: var(--at-spacing-md);
+    border-radius: var(--at-border-radius);
+    background: var(--at-bg);
+    border: 1px dashed var(--at-border);
+  }
+</style>
+
+<script>
+  function initializeDiagram(root: HTMLElement) {
+    if (root.dataset.lmDiagramInitialized === "true") return;
+    root.dataset.lmDiagramInitialized = "true";
+
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>("[data-lm-diagram-stage]")];
+    const panel = root.querySelector<HTMLElement>("[data-lm-diagram-panel]");
+    if (!panel) return;
+
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        for (const other of buttons) other.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-expanded", "true");
+
+        const risk = button.dataset.risk === "true";
+        const explanation = button.dataset.explanation ?? "";
+        const verdict = risk ? "Last-mile risk point" : "Not the last-mile risk point";
+        panel.textContent = `${verdict}: ${explanation}`;
+      });
+    }
+  }
+
+  function initializeDiagrams() {
+    document
+      .querySelectorAll<HTMLElement>('[data-last-mile-mechanic="diagram"]')
+      .forEach((root) => initializeDiagram(root));
+  }
+
+  initializeDiagrams();
+  document.addEventListener("astro:page-load", initializeDiagrams);
+</script>

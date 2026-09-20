@@ -1,0 +1,92 @@
+---
+title: The Bathroom Is the Real Menu
+description:
+  The kitchen earns a restaurant its customers. The restroom is what
+  decides, silently and without complaint, whether those customers
+  ever come back
+angle:
+  In hospitality the last mile is expensive precisely because a spotless
+  bathroom earns a restaurant zero new customers, which is exactly why it's
+  the easiest budget line to quietly shortchange.
+mechanic: diagram
+links:
+  - label: "Survey: dirty restaurant bathrooms cost 80% of repeat diners"
+    url: https://opiniator.com/restaurant-restroom-quality-dirty-bathrooms-are-damaging-profits/
+week: 4
+date: 2027-03-15
+teachers:
+  - idris-fenn
+related:
+  - week-03
+---
+
+import ProcessDiagram from "../../components/ProcessDiagram.astro";
+
+Nobody chooses a restaurant because of its bathroom. A global survey of
+more than 4,000 diners found that 100% agreed a dirty restroom reflects
+badly on the establishment — and 80% said they would not, or might not,
+return to a restaurant after finding one. Read those two numbers
+together and you get the actual shape of the problem: the bathroom
+contributes nothing to the decision that gets someone through the door,
+and almost everything to the decision about whether they ever come
+back. It's a cost centre with no matching revenue line, which is exactly
+why it's the first thing an under-pressure manager lets slide.
+
+This is a different mechanism again from the last three weeks, and worth
+being precise about. Software's last mile is expensive because of
+compounding debt. Broadband's is expensive because of geometry. A
+restaurant bathroom's last mile is expensive because the cost of
+neglecting it is invisible at the point of neglect — nobody complains on
+the way out, they just don't come back, and by the time that shows up in
+the numbers it's aggregated into "quiet slump," not "the bathroom."
+Compare that to a badly plated dish: a customer sends it back
+immediately, the kitchen hears about it that night. The last mile here
+is expensive because the feedback loop that would normally force a fix
+is broken.
+
+<ProcessDiagram
+  heading="Where hospitality actually loses returning customers"
+  headingId="week-04-diagram"
+  stages={[
+    {
+      id: "kitchen",
+      label: "Food quality",
+      isLastMileRisk: false,
+      explanation:
+        "Directly rewarded and directly punished — a bad dish gets sent back the same night. The feedback loop works.",
+    },
+    {
+      id: "service",
+      label: "Front-of-house service",
+      isLastMileRisk: false,
+      explanation:
+        "Also visible in the moment: a rude or slow server gets noticed and reported almost immediately.",
+    },
+    {
+      id: "ambiance",
+      label: "Ambiance and decor",
+      isLastMileRisk: false,
+      explanation:
+        "Noticed, but rarely decisive on its own — customers rate a room, but it's rarely the reason they stop returning.",
+    },
+    {
+      id: "restroom",
+      label: "Restroom maintenance",
+      isLastMileRisk: true,
+      explanation:
+        "The one factor with a broken feedback loop: it drives no visible complaint, only a silent 80%-scale drop in return visits that never gets traced back to its cause.",
+    },
+  ]}
+/>
+
+That's the complication worth extending the thesis with: not every
+last-mile cost is hidden because someone is avoiding it, the way a
+software team avoids hardening or a PhD student avoids writing. Some are
+hidden because the business genuinely cannot see the bill arriving —
+the restroom doesn't generate a complaint, a review, or a refund
+request; it generates an absence, and absences don't file tickets. A
+manager working entirely from complaint volume will rank the bathroom as
+fine, right up until repeat-visit numbers quietly erode for reasons
+nobody has a report for. The fix isn't willpower, it's measurement: you
+have to go looking for the cost that the ordinary feedback channel was
+never built to surface.

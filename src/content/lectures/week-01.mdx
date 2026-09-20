@@ -1,0 +1,106 @@
+---
+title: Done Enough to Demo, Nowhere Near Shipped
+description:
+  Why "it works on my machine" and "it's live for actual users" are different
+  projects, and treating the gap as more of the same work is how software
+  dies in the drawer
+angle:
+  In software the last mile is expensive because every corner you cut to
+  reach the demo has to be paid back with interest before anyone can rely on
+  it.
+mechanic: diagram
+links:
+  - label: The ninety-ninety rule
+    url: https://en.wikipedia.org/wiki/Ninety%E2%80%93ninety_rule
+  - label: "Duke Nukem Forever: What Happened? (Matt McMuscles)"
+    url: https://www.youtube.com/watch?v=EL7HETVAiXY
+week: 1
+date: 2027-02-22
+teachers:
+  - marisol-quaye
+slides: /decks/week-01/
+related:
+  - sessions/01-getting-started
+---
+
+import ProcessDiagram from "../../components/ProcessDiagram.astro";
+
+A demo and a shipped product are not the same artefact at 90% and 100%
+completion. They are two different projects that happen to share a
+codebase. The demo's job is to convince someone the idea works; the
+shipped product's job is to keep working when someone you've never met,
+on a network you don't control, does something you didn't anticipate. You
+can get most of the way to the second by doing more of what got you the
+first — more features, more polish — and none of it touches the part that
+was actually missing.
+
+Here's the specific thing that makes this expensive, not just slow: every
+shortcut you took to reach the demo is a decision baked into the
+architecture, not a checkbox you tick later. No auth boundary because it
+was just you testing. No input validation because you control the input.
+No retry logic because the network never dropped in your office. Every
+one of those is fine in isolation and free at demo time. But they don't
+sit next to each other quietly — they interact. Skip auth *and* skip rate
+limiting and you don't have two small gaps, you have an open door with no
+lock and no camera. Fixing one exposes how much the design assumed the
+other was also missing. That's why "the last 10%" of a software project
+routinely costs as much as the first 90%: it isn't 10% more feature work,
+it's the bill for every assumption the first 90% quietly made.
+
+This is where the ninety-ninety rule comes from — not as a joke about bad
+estimating, but as an accurate description of where the actual unknowns
+live. The features are knowable in advance. The corners cut to reach them
+are not enumerated anywhere, and you only discover the full set of them
+by trying to make the thing survive contact with someone who isn't you.
+
+<ProcessDiagram
+  heading="Where a software project actually stalls"
+  headingId="week-01-diagram"
+  stages={[
+    {
+      id: "demo",
+      label: "Working demo",
+      isLastMileRisk: false,
+      explanation:
+        "Proves the idea works under conditions you controlled. Cheap, and it should stay cheap.",
+    },
+    {
+      id: "feature-complete",
+      label: "Feature-complete",
+      isLastMileRisk: false,
+      explanation:
+        "Every feature exists. Existing and surviving real users are different claims.",
+    },
+    {
+      id: "hardening",
+      label: "Hardening for production",
+      isLastMileRisk: true,
+      explanation:
+        "This is where every corner cut to reach the demo gets paid back — and they compound, so this stage doesn't scale like the others did.",
+    },
+    {
+      id: "launch",
+      label: "Public launch",
+      isLastMileRisk: false,
+      explanation:
+        "Anticlimactic on purpose. If hardening was done properly, launch is not the hard part.",
+    },
+  ]}
+/>
+
+Duke Nukem Forever is the extreme case, not the exception that proves the
+rule wrong. It spent fourteen years in development, was rebooted six
+times, and became a running joke — "Duke Nukem Never" — precisely because
+its studio kept doing more of the first kind of work (new engines, new
+set pieces, whatever impressed the team that week) instead of closing out
+the second kind. Feature creep isn't a distraction from finishing; in
+software specifically, it's a way of avoiding it, because adding a new
+feature feels like progress and paying down the interest on old shortcuts
+does not.
+
+The complication worth sitting with: this means the cost of finishing
+isn't fixed by how much is left to build. It's fixed by how many
+load-bearing shortcuts you took to get here, and those compound with each
+other rather than adding up — which is why teams that feel "90% done" for
+months aren't lying to themselves about the wrong number, they're lying
+to themselves about the wrong kind of number entirely.

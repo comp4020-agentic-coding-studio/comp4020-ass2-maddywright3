@@ -1,0 +1,140 @@
+---
+interface PolishPoint {
+  polish: number;
+  engineeringCost: number;
+  userValue: number;
+}
+
+interface Props {
+  heading: string;
+  headingId: string;
+  curve: PolishPoint[];
+}
+
+const { heading, headingId, curve } = Astro.props;
+const sortedCurve = [...curve].sort((a, b) => a.polish - b.polish);
+---
+
+<section
+  class="lm-dial"
+  data-last-mile-mechanic="other"
+  data-lm-widget="polish-dial"
+  aria-labelledby={headingId}
+  data-curve={JSON.stringify(sortedCurve)}
+>
+  <h2 id={headingId}>{heading}</h2>
+  <label class="lm-dial-label" for={`${headingId}-dial`}>
+    Increments of polish added to a shipped feature
+  </label>
+  <input
+    id={`${headingId}-dial`}
+    type="range"
+    min={sortedCurve[0]?.polish ?? 0}
+    max={sortedCurve[sortedCurve.length - 1]?.polish ?? 10}
+    step="1"
+    value={sortedCurve[0]?.polish ?? 0}
+    data-lm-dial
+  />
+  <dl class="lm-dial-readouts" data-lm-dial-readouts aria-live="polite">
+    <dt>Engineering cost</dt>
+    <dd data-lm-dial-cost>—</dd>
+    <dt>User value</dt>
+    <dd data-lm-dial-value>—</dd>
+  </dl>
+</section>
+
+<style>
+  .lm-dial {
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    padding: var(--at-spacing-lg);
+    background: var(--at-bg-alt);
+  }
+
+  .lm-dial-label {
+    display: block;
+    font-weight: 600;
+    margin-block-end: var(--at-spacing-sm);
+  }
+
+  .lm-dial input[type="range"] {
+    width: 100%;
+    accent-color: var(--at-primary);
+  }
+
+  .lm-dial-readouts {
+    margin-block-start: var(--at-spacing-md);
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--at-spacing-xs) var(--at-spacing-md);
+  }
+
+  .lm-dial-readouts dt {
+    color: var(--at-text-secondary);
+  }
+
+  .lm-dial-readouts dd {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .lm-dial-readouts dd[data-negative="true"]::before {
+    content: "Negative: ";
+    color: var(--at-error);
+  }
+</style>
+
+<script>
+  interface PolishPoint {
+    polish: number;
+    engineeringCost: number;
+    userValue: number;
+  }
+
+  function interpolate(curve: PolishPoint[], polish: number, key: "engineeringCost" | "userValue"): number {
+    const clamped = Math.max(curve[0].polish, Math.min(curve[curve.length - 1].polish, polish));
+    for (let i = 0; i < curve.length - 1; i++) {
+      const a = curve[i];
+      const b = curve[i + 1];
+      if (clamped >= a.polish && clamped <= b.polish) {
+        const span = b.polish - a.polish;
+        const ratio = span === 0 ? 0 : (clamped - a.polish) / span;
+        return a[key] + ratio * (b[key] - a[key]);
+      }
+    }
+    return curve[curve.length - 1][key];
+  }
+
+  function initializeDial(root: HTMLElement) {
+    if (root.dataset.lmDialInitialized === "true") return;
+    root.dataset.lmDialInitialized = "true";
+
+    const curve = JSON.parse(root.dataset.curve ?? "[]") as PolishPoint[];
+    const input = root.querySelector<HTMLInputElement>("[data-lm-dial]");
+    const cost = root.querySelector<HTMLElement>("[data-lm-dial-cost]");
+    const value = root.querySelector<HTMLElement>("[data-lm-dial-value]");
+    if (!input || !cost || !value || curve.length < 2) return;
+
+    function update() {
+      const polish = Number(input!.value);
+      const costValue = interpolate(curve, polish, "engineeringCost");
+      const userValue = interpolate(curve, polish, "userValue");
+      cost!.textContent = costValue.toFixed(1);
+      value!.textContent = userValue.toFixed(1);
+      value!.toggleAttribute("data-negative", userValue < 0);
+      value!.setAttribute("data-negative", String(userValue < 0));
+    }
+
+    input.addEventListener("input", update);
+    update();
+  }
+
+  function initializeDials() {
+    document
+      .querySelectorAll<HTMLElement>('[data-lm-widget="polish-dial"]')
+      .forEach((root) => initializeDial(root));
+  }
+
+  initializeDials();
+  document.addEventListener("astro:page-load", initializeDials);
+</script>

@@ -1,0 +1,72 @@
+---
+title: The Feature That Finishes Itself Into Irrelevance
+description:
+  Richard Gabriel's "worse is better" essay is the counter-argument this
+  course needed — sometimes the thing that loses is the one that kept
+  finishing past the point anyone wanted
+angle:
+  Open-source overbuilding is where this thesis meets its limit — past a
+  point, continued finishing stops costing more and starts actively
+  subtracting value nobody asked to lose.
+mechanic: other
+links:
+  - label: "Richard P. Gabriel: The Rise of \"Worse Is Better\""
+    url: https://dreamsongs.com/RiseOfWorseIsBetter.html
+week: 11
+date: 2027-05-03
+teachers:
+  - marisol-quaye
+related:
+  - week-10
+---
+
+import PolishCurveDial from "../../components/PolishCurveDial.astro";
+
+Richard Gabriel's 1989 essay "The Rise of 'Worse Is Better'" is the one
+genuine counter-example this course needs to take seriously, because
+it's an argument from someone who built the "right thing" and watched it
+lose anyway. Gabriel contrasted two design philosophies: "the right
+thing," which prizes correctness, consistency, and completeness above
+all — his own example is Common Lisp — against "worse is better," which
+accepts a simpler, less complete implementation because simplicity wins
+adoption. His conclusion, stated with visible discomfort at his own
+argument: worse-is-better software "has better survival characteristics
+than the-right-thing," and unfinished-on-purpose, simple tools
+repeatedly out-competed more complete, more correct ones — C over Lisp,
+Unix over Lisp machines — because by the time the complete version was
+actually finished, the market had already adopted the incomplete one
+and couldn't switch back.
+
+Every earlier week in this course argued that stopping short costs you
+later. This week argues the opposite is also true, and that's the
+specific complication worth taking as seriously as the thesis itself:
+continued polish doesn't just cost more per increment, past some point
+it actively subtracts from what users wanted, because every additional
+feature is also additional surface area — more to load, more to learn,
+more ways for the simple thing someone chose to stop being simple.
+
+<PolishCurveDial
+  heading="Engineering cost vs. user value as polish keeps being added"
+  headingId="week-11-dial"
+  curve={[
+    { polish: 0, engineeringCost: 1, userValue: 1 },
+    { polish: 3, engineeringCost: 4, userValue: 5 },
+    { polish: 6, engineeringCost: 9, userValue: 6 },
+    { polish: 8, engineeringCost: 14, userValue: 3 },
+    { polish: 10, engineeringCost: 20, userValue: -4 },
+  ]}
+/>
+
+This is where the thesis has to be complicated, not just extended. "The
+last mile is expensive, so budget for it" is good advice up to the point
+where the thing being finished has already delivered what its users
+came for. Past that point, the same finishing instinct that fixed
+software's shortcuts in week one starts actively working against the
+product: complexity that has to be maintained, learned, and shipped
+around forever, in exchange for value that's gone flat or turned
+negative. Gabriel's own ambivalence about his essay — he called it "an
+intentional caricature" even while conceding it kept being true — is
+the right note to end this week on. The thesis "finish the thing" is
+correct far more often than it's wrong. This is the week that shows
+where it stops being correct, and a course that never admitted that
+would be worse evidence for its own argument, not better.

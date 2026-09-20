@@ -1,0 +1,94 @@
+---
+title: The Handover Slide Deck Is Not the Handover
+description:
+  Two teams can both finish their half of a project and the thing still
+  fails completely at the seam between them — a $125 million spacecraft
+  is the textbook case
+angle:
+  Institutional handovers make the last mile expensive by relocating it
+  entirely outside anyone's individual work, into the seam between two
+  teams who each, correctly, believe they are done.
+mechanic: diagram
+links:
+  - label: "IEEE Spectrum: Why the Mars Probe Went Off Course"
+    url: https://spectrum.ieee.org/why-the-mars-probe-went-off-course
+week: 7
+date: 2027-04-05
+teachers:
+  - marisol-quaye
+related:
+  - week-06
+---
+
+import ProcessDiagram from "../../components/ProcessDiagram.astro";
+
+NASA's Mars Climate Orbiter is the cleanest case study this course has,
+because both halves of the handover it failed at were, individually,
+finished correctly. Lockheed Martin built the spacecraft and delivered
+thruster-force data exactly as their process specified. JPL's navigation
+team wrote trajectory software and fed that data in exactly as their
+process specified. The catch: Lockheed's numbers were in pound-seconds of
+force, and JPL's model expected newton-seconds — a factor of roughly
+4.45 that nobody on either finished team caught, because catching it was
+nobody's explicit job. The $125 million spacecraft flew 57 kilometres
+above Mars instead of 140, hit atmosphere it was never built to survive,
+and broke apart.
+
+That's the specific, expensive thing about this domain's last mile:
+unlike a solo software team's shortcuts, or a construction site's punch
+list, the failure here doesn't live inside either team's finished work —
+it lives in the boundary between them, where a document was traded for
+knowledge that never fully fit on the page. Explicit knowledge —
+formats, specs, file layouts — survives a handover reliably. Tacit
+knowledge — the assumption that "force" obviously means one particular
+unit, because that's what everyone in this building has always meant by
+it — does not, and nothing in a standard handover checklist is designed
+to surface an assumption nobody thought to write down because nobody
+thought it was a choice.
+
+<ProcessDiagram
+  heading="Where a cross-team handover actually breaks"
+  headingId="week-07-diagram"
+  stages={[
+    {
+      id: "design",
+      label: "Design finalised",
+      isLastMileRisk: false,
+      explanation:
+        "Each team's design is internally consistent and reviewed on its own terms.",
+    },
+    {
+      id: "build",
+      label: "Build / implementation complete",
+      isLastMileRisk: false,
+      explanation:
+        "Each team ships work that passes its own tests, under its own assumptions.",
+    },
+    {
+      id: "handover",
+      label: "Handover documentation delivered",
+      isLastMileRisk: true,
+      explanation:
+        "The explicit spec transfers cleanly. The unwritten assumptions behind it — like which unit 'force' means — often don't, and nobody's role is to check for exactly that.",
+    },
+    {
+      id: "operation",
+      label: "Combined system in operation",
+      isLastMileRisk: false,
+      explanation:
+        "Where a mismatched assumption stops being hypothetical and starts being a trajectory 83 kilometres off course.",
+    },
+  ]}
+/>
+
+The complication this adds to the thesis: "done" can be true twice and
+the project can still fail completely. Lockheed finished. JPL finished.
+Neither team's retrospective would find anything to fix in their own
+process, because there wasn't anything wrong with their own process —
+the defect only exists in the space between two teams' definitions of
+done, which is precisely the space that neither team's own quality
+checks were ever built to look at. NASA's own review called it "an
+end-to-end process problem," not a mistake by either team — which is
+the whole point. When the last mile is the seam between two finished
+things, no amount of finishing either thing better would have caught it;
+only someone explicitly responsible for the seam itself could have.

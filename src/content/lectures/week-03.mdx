@@ -1,0 +1,92 @@
+---
+title: All But the Dissertation
+description:
+  Coursework has deadlines someone else enforces. The dissertation doesn't —
+  which is exactly why "ABD" is a permanent address for so many otherwise
+  finished PhD students
+angle:
+  In graduate research the last mile is expensive because the dissertation
+  is the one deliverable nobody else is waiting on yet, so it is the easiest
+  work in the entire degree to keep deferring.
+mechanic: diagram
+links:
+  - label: "Council of Graduate Schools: Ph.D. Completion Project"
+    url: https://www.phdcompletion.org/
+week: 3
+date: 2027-03-08
+teachers:
+  - marisol-quaye
+related:
+  - week-02
+---
+
+import ProcessDiagram from "../../components/ProcessDiagram.astro";
+
+"ABD" — all but dissertation — is common enough in academia to have its
+own acronym, which should tell you something: this isn't a rare failure
+mode, it's a well-known, permanent address that a huge number of
+otherwise-finished PhD students live at indefinitely. The Council of
+Graduate Schools tracked nearly 49,000 students across 30 institutions
+and found that ten years after starting, only about 56.6% had completed
+their doctorate. Not "hadn't finished yet" — many of that remainder never
+will. These aren't people who failed coursework or bombed their
+qualifying exams. By the time you're ABD you've cleared every gate
+someone else was watching.
+
+That's the specific thing that makes this last mile expensive, and it's
+a different mechanism from either of the last two weeks. It isn't
+compounding technical debt (software) and it isn't geometry (broadband).
+It's that every earlier stage of a PhD has an external forcing function
+— a course has a due date, a qualifying exam has a scheduled sitting,
+your advisor is in the room — and the dissertation is the first
+deliverable in years of study that doesn't. Nobody is refusing to let you
+into the next room until it's done. There's no room. You're already
+qualified to call yourself ABD, which means the label itself removes the
+pressure that got you this far.
+
+<ProcessDiagram
+  heading="Where a PhD actually stalls"
+  headingId="week-03-diagram"
+  stages={[
+    {
+      id: "coursework",
+      label: "Coursework complete",
+      isLastMileRisk: false,
+      explanation:
+        "Externally paced — due dates, exams, a lecturer waiting on your submission. Rarely where students get stuck.",
+    },
+    {
+      id: "comps",
+      label: "Qualifying exams passed",
+      isLastMileRisk: false,
+      explanation:
+        "A hard, scheduled gate. Frightening, but it forces itself to happen on a fixed date.",
+    },
+    {
+      id: "abd",
+      label: "ABD — all but dissertation",
+      isLastMileRisk: true,
+      explanation:
+        "The one stage with no external clock. Nothing forces the next word to get written except the student's own resolve, which is why this is where the CGS's own numbers show people stop.",
+    },
+    {
+      id: "defended",
+      label: "Dissertation defended",
+      isLastMileRisk: false,
+      explanation:
+        "Once a defense is scheduled, an external clock exists again — and completion rates from that point are high.",
+    },
+  ]}
+/>
+
+This is a complication of the thesis worth taking seriously: it predicts
+that the fix for procrastination-driven last miles isn't more talent or
+more discipline, it's re-introducing the thing that was missing —
+external structure. Programs that build in staged, scheduled
+dissertation milestones (chapter defenses, committee check-ins with
+actual calendar dates) report meaningfully better completion than
+programs that hand a student a topic and see them again at submission.
+The lesson generalizes past academia: whenever a last mile is stalling
+not because it's technically hard but because nobody else is waiting on
+it, the fix isn't to work harder at finishing — it's to manufacture the
+external deadline that the rest of the project had for free.

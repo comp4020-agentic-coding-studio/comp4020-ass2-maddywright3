@@ -9,21 +9,36 @@ import { describe, expect, it } from "vitest";
 // fabricated-but-real-looking; that's still a human read before it's
 // committed.
 
+interface IndexNode {
+  id: string;
+}
+
+interface CourseIndex {
+  nodes: IndexNode[];
+}
+
 interface ApiNode {
   id: string;
-  links: { label: string; url: string }[];
+  links?: { label: string; url: string }[];
 }
 
-interface CourseApi {
-  nodes: ApiNode[];
-}
-
-const api = JSON.parse(readFileSync(resolve("dist/api/index.json"), "utf8")) as CourseApi;
+// The aggregate dist/api/index.json never carries a `links` field (see
+// astro-course-university's generateIndexJson) — only each node's own
+// dist/api/<id>.json does (generateNodeJson). So the index is only used here
+// to enumerate node ids; the actual link data comes from the per-node files.
+const index = JSON.parse(readFileSync(resolve("dist/api/index.json"), "utf8")) as CourseIndex;
 
 const urlToNodes = new Map<string, string[]>();
-for (const node of api.nodes) {
+for (const { id } of index.nodes) {
+  const nodePath = resolve(`dist/api/${id}.json`);
+  let node: ApiNode;
+  try {
+    node = JSON.parse(readFileSync(nodePath, "utf8")) as ApiNode;
+  } catch {
+    continue;
+  }
   for (const link of node.links ?? []) {
-    urlToNodes.set(link.url, [...(urlToNodes.get(link.url) ?? []), node.id]);
+    urlToNodes.set(link.url, [...(urlToNodes.get(link.url) ?? []), id]);
   }
 }
 
@@ -48,9 +63,13 @@ describe("every external source link resolves", () => {
   }
 
   for (const [url, nodeIds] of urlToNodes) {
-    it(`${url} (linked from ${nodeIds.join(", ")})`, async () => {
-      const result = await resolves(url);
-      expect(result.ok, `${url} did not resolve: ${result.detail}`).toBe(true);
-    });
+    it(
+      `${url} (linked from ${nodeIds.join(", ")})`,
+      async () => {
+        const result = await resolves(url);
+        expect(result.ok, `${url} did not resolve: ${result.detail}`).toBe(true);
+      },
+      15_000,
+    );
   }
 });

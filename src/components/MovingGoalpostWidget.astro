@@ -1,0 +1,136 @@
+---
+interface Props {
+  heading: string;
+  headingId: string;
+  startTarget: number;
+  jumpAmount: number;
+}
+
+const { heading, headingId, startTarget, jumpAmount } = Astro.props;
+---
+
+<section
+  class="lm-goalpost"
+  data-last-mile-mechanic="other"
+  data-lm-widget="goalpost"
+  aria-labelledby={headingId}
+  data-start-target={startTarget}
+  data-jump-amount={jumpAmount}
+>
+  <h2 id={headingId}>{heading}</h2>
+  <p class="lm-goalpost-hint">Drag progress toward the target. Watch what happens when you get close.</p>
+  <div class="lm-goalpost-track" aria-hidden="true">
+    <div class="lm-goalpost-fill" data-lm-goalpost-fill></div>
+    <div class="lm-goalpost-marker" data-lm-goalpost-marker></div>
+  </div>
+  <input
+    type="range"
+    min="0"
+    max="100"
+    step="1"
+    value="0"
+    data-lm-goalpost-progress
+    aria-label="Progress toward the target"
+  />
+  <p class="lm-goalpost-readout" data-lm-goalpost-readout aria-live="polite">
+    Target: {startTarget}%. Attempts: 0.
+  </p>
+</section>
+
+<style>
+  .lm-goalpost {
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    padding: var(--at-spacing-lg);
+    background: var(--at-bg-alt);
+  }
+
+  .lm-goalpost-hint {
+    color: var(--at-text-secondary);
+    font-size: var(--at-font-size-sm);
+  }
+
+  .lm-goalpost-track {
+    position: relative;
+    height: 1.5rem;
+    background: var(--at-bg);
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    margin-block: var(--at-spacing-md);
+    overflow: hidden;
+  }
+
+  .lm-goalpost-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--at-primary);
+    transition: width 0.1s linear;
+  }
+
+  .lm-goalpost-marker {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--at-error);
+    left: 0%;
+    transition: left 0.2s ease-out;
+  }
+
+  .lm-goalpost input[type="range"] {
+    width: 100%;
+    accent-color: var(--at-primary);
+  }
+
+  .lm-goalpost-readout {
+    padding: var(--at-spacing-md);
+    border-radius: var(--at-border-radius);
+    background: var(--at-bg);
+    border: 1px dashed var(--at-border);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  function initializeGoalpost(root: HTMLElement) {
+    if (root.dataset.lmGoalpostInitialized === "true") return;
+    root.dataset.lmGoalpostInitialized = "true";
+
+    const startTarget = Number(root.dataset.startTarget ?? "90");
+    const jumpAmount = Number(root.dataset.jumpAmount ?? "5");
+    const input = root.querySelector<HTMLInputElement>("[data-lm-goalpost-progress]");
+    const fill = root.querySelector<HTMLElement>("[data-lm-goalpost-fill]");
+    const marker = root.querySelector<HTMLElement>("[data-lm-goalpost-marker]");
+    const readout = root.querySelector<HTMLElement>("[data-lm-goalpost-readout]");
+    if (!input || !fill || !marker || !readout) return;
+
+    let target = startTarget;
+    let attempts = 0;
+
+    function render(progress: number) {
+      fill!.style.width = `${progress}%`;
+      marker!.style.left = `${Math.min(100, target)}%`;
+      readout!.textContent = `Target: ${target}%. Attempts: ${attempts}.`;
+    }
+
+    input.addEventListener("input", () => {
+      const progress = Number(input!.value);
+      if (progress >= target) {
+        attempts += 1;
+        target = target + jumpAmount;
+      }
+      render(progress);
+    });
+
+    render(0);
+  }
+
+  function initializeGoalposts() {
+    document
+      .querySelectorAll<HTMLElement>('[data-lm-widget="goalpost"]')
+      .forEach((root) => initializeGoalpost(root));
+  }
+
+  initializeGoalposts();
+  document.addEventListener("astro:page-load", initializeGoalposts);
+</script>

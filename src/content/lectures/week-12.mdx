@@ -1,0 +1,72 @@
+---
+title: Which Last Mile Have You Actually Hit
+description:
+  Eleven domains, eleven different reasons finishing was the expensive
+  part — the synthesis week asks which of them you've personally lived
+  through, not which you can recite
+angle:
+  The synthesis week's argument is that these eleven domains share a
+  blind spot, not a mechanism — which is why no fixed cost-curve was
+  ever going to be this course's final word.
+mechanic: quiz
+links:
+  - label: "Wikipedia: Zeigarnik effect"
+    url: https://en.wikipedia.org/wiki/Zeigarnik_effect
+week: 12
+date: 2027-05-10
+teachers:
+  - idris-fenn
+related:
+  - week-11
+---
+
+import ReflectiveQuiz from "../../components/ReflectiveQuiz.astro";
+
+Eleven weeks, eleven domains, and — if this course did its job — eleven
+different answers to "why is the last mile expensive here," not one
+answer repeated eleven times with a new coat of paint. Software's last
+mile was compounding technical debt. Broadband's was geometry nobody
+chose. A PhD's was a missing external deadline. A restaurant bathroom's
+was a broken feedback loop. Law's was an irreversible step function.
+Manufacturing's was a literal, measured multiplier. A cross-team
+handover's was a seam between two finished things. A startup's was a
+target that moves. Construction's was a legal threshold, not a slope.
+Aviation's was a few minutes carrying half the risk. Open-source
+overbuilding's was the thesis running past its own limit into negative
+value. If there's one thing all eleven share, it isn't a shape of curve
+— it's a blind spot: in every domain, the people closest to the work
+kept underestimating the specific cost of their own last mile, usually
+because that cost wasn't the kind their normal tracking was built to
+see.
+
+There's a fitting, if contested, psychological frame for why "finish"
+sticks with us the way it does. Bluma Zeigarnik's 1927 studies found
+that people recalled interrupted, unfinished tasks at roughly twice the
+rate of completed ones — the unresolved task keeps generating mental
+tension that a finished one doesn't. Worth saying plainly: later
+replications have been inconsistent, and a 2025 meta-analysis found no
+reliable memory advantage for unfinished tasks at all, only a general
+tendency to want to resume them. That mixed, argued-over status is
+actually the right closing image for this course rather than a
+liability — it's a hundred years of psychologists disagreeing about
+exactly how much unfinished work costs us psychologically, which is the
+same argument this course has been having about how much it costs
+practically, domain by domain, for twelve weeks.
+
+<ReflectiveQuiz
+  heading="Which of these last-mile problems have you actually hit?"
+  headingId="week-12-quiz"
+  domains={[
+    { id: "software", label: "Software", question: "Shipped a demo whose shortcuts never got paid back before it had to be real?", resultMessage: "Software: shortcuts that were free at demo time, compounding once real users showed up." },
+    { id: "infrastructure", label: "Infrastructure", question: "Left the hardest, sparsest-served customers connected last, if at all?", resultMessage: "Infrastructure: cost driven by geometry, not effort — the last customer costing as much as all the others combined." },
+    { id: "writing", label: "Academic writing", question: "Reached 'all but the write-up' and stalled with no external deadline pushing you?", resultMessage: "Academic writing: the one stage with no external clock, which is exactly where people stop." },
+    { id: "hospitality", label: "Hospitality", question: "Let a maintenance task slide because nobody complained about it directly?", resultMessage: "Hospitality: a cost the ordinary feedback loop was never built to surface." },
+    { id: "law", label: "Law / compliance", question: "Trusted a single calendar entry with something that couldn't be redone if missed?", resultMessage: "Law: a last mile that's a step function, not a slope — fine until it's total." },
+    { id: "manufacturing", label: "Manufacturing", question: "Deferred an inspection, knowing the same flaw gets more expensive to fix later?", resultMessage: "Manufacturing: a literal, measured multiplier — design-stage dollars vs. field-stage hundreds." },
+    { id: "handover", label: "Institutional handover", question: "Handed off 'finished' work and had it fail at the seam with someone else's 'finished' work?", resultMessage: "Handover: two finished halves, one seam neither side's own review could see." },
+    { id: "startups", label: "Startups", question: "Hit the goal you were told mattered, only to find the goal had already moved?", resultMessage: "Startups: a finish line that relocates in response to how fast you're closing on it." },
+    { id: "construction", label: "Construction", question: "Been stopped at 98% by a threshold that doesn't care how close you are?", resultMessage: "Construction: occupancy is a binary gate, not a gradient — 98% buys you nothing." },
+    { id: "aerospace", label: "Aerospace", question: "Treated the final, shortest stretch as the safest part because it's nearly over?", resultMessage: "Aerospace: minutes of flight time, roughly half the historical fatal risk." },
+    { id: "overbuilding", label: "Overbuilding", question: "Kept polishing something past the point where the polish started costing users, not helping them?", resultMessage: "Overbuilding: the week the thesis meets its own limit — finishing more can mean losing value, not gaining it." },
+  ]}
+/>

@@ -1,0 +1,143 @@
+---
+interface CurvePoint {
+  percent: number;
+  cost: number;
+}
+
+interface Props {
+  heading: string;
+  headingId: string;
+  curve: CurvePoint[];
+}
+
+const { heading, headingId, curve } = Astro.props;
+const sortedCurve = [...curve].sort((a, b) => a.percent - b.percent);
+const maxCost = Math.max(...sortedCurve.map((point) => point.cost));
+---
+
+<section
+  class="lm-slider"
+  data-last-mile-mechanic="cost-curve"
+  aria-labelledby={headingId}
+  data-curve={JSON.stringify(sortedCurve)}
+  data-max-cost={maxCost}
+>
+  <h2 id={headingId}>{heading}</h2>
+  <label class="lm-slider-label" for={`${headingId}-range`}>
+    Drag completion from 90% to 100%
+  </label>
+  <input
+    id={`${headingId}-range`}
+    type="range"
+    min="0"
+    max="100"
+    step="1"
+    value="90"
+    data-lm-slider
+  />
+  <div class="lm-slider-bar-track" aria-hidden="true">
+    <div class="lm-slider-bar-fill" data-lm-slider-bar></div>
+  </div>
+  <p class="lm-slider-readout" data-lm-slider-readout aria-live="polite">
+    Drag the slider to see cost rise.
+  </p>
+</section>
+
+<style>
+  .lm-slider {
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    padding: var(--at-spacing-lg);
+    background: var(--at-bg-alt);
+  }
+
+  .lm-slider-label {
+    display: block;
+    font-weight: 600;
+    margin-block-end: var(--at-spacing-sm);
+  }
+
+  .lm-slider input[type="range"] {
+    width: 100%;
+    accent-color: var(--at-primary);
+  }
+
+  .lm-slider-bar-track {
+    margin-block: var(--at-spacing-md);
+    height: 8rem;
+    width: 3rem;
+    background: var(--at-bg);
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .lm-slider-bar-fill {
+    width: 100%;
+    background: var(--at-primary);
+    height: 0%;
+    transition: height 0.15s ease-out;
+  }
+
+  .lm-slider-readout {
+    padding: var(--at-spacing-md);
+    border-radius: var(--at-border-radius);
+    background: var(--at-bg);
+    border: 1px dashed var(--at-border);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  interface CurvePoint {
+    percent: number;
+    cost: number;
+  }
+
+  function interpolate(curve: CurvePoint[], percent: number): number {
+    const clamped = Math.max(curve[0].percent, Math.min(curve[curve.length - 1].percent, percent));
+    for (let i = 0; i < curve.length - 1; i++) {
+      const a = curve[i];
+      const b = curve[i + 1];
+      if (clamped >= a.percent && clamped <= b.percent) {
+        const span = b.percent - a.percent;
+        const ratio = span === 0 ? 0 : (clamped - a.percent) / span;
+        return a.cost + ratio * (b.cost - a.cost);
+      }
+    }
+    return curve[curve.length - 1].cost;
+  }
+
+  function initializeSlider(root: HTMLElement) {
+    if (root.dataset.lmSliderInitialized === "true") return;
+    root.dataset.lmSliderInitialized = "true";
+
+    const curve = JSON.parse(root.dataset.curve ?? "[]") as CurvePoint[];
+    const maxCost = Number(root.dataset.maxCost ?? "1") || 1;
+    const input = root.querySelector<HTMLInputElement>("[data-lm-slider]");
+    const bar = root.querySelector<HTMLElement>("[data-lm-slider-bar]");
+    const readout = root.querySelector<HTMLElement>("[data-lm-slider-readout]");
+    if (!input || !bar || !readout || curve.length < 2) return;
+
+    function update() {
+      const percent = Number(input!.value);
+      const cost = interpolate(curve, percent);
+      bar!.style.height = `${Math.min(100, (cost / maxCost) * 100)}%`;
+      readout!.textContent = `At ${percent}% complete, estimated cost is ${cost.toFixed(1)}.`;
+    }
+
+    input.addEventListener("input", update);
+    update();
+  }
+
+  function initializeSliders() {
+    document
+      .querySelectorAll<HTMLElement>('[data-last-mile-mechanic="cost-curve"]')
+      .forEach((root) => initializeSlider(root));
+  }
+
+  initializeSliders();
+  document.addEventListener("astro:page-load", initializeSliders);
+</script>

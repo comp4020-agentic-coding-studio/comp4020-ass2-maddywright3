@@ -1,0 +1,69 @@
+---
+title: Ninety-Eight Percent Done Is a Different Building Than One Hundred
+description:
+  A building department will not certify "almost finished" — why the
+  construction punch list turns the last few percent of a project into a
+  binary gate, not a slope
+angle:
+  In construction the last mile is expensive because occupancy is a legal
+  binary, not a percentage — the punch list gates every day of rent or
+  lease income the building isn't yet allowed to earn.
+mechanic: calculator
+links:
+  - label: "Procore: Certificate of Occupancy Explained for Construction"
+    url: https://www.procore.com/library/certificate-of-occupancy
+week: 9
+date: 2027-04-19
+teachers:
+  - marisol-quaye
+related:
+  - week-08
+---
+
+import LastMileCalculator from "../../components/LastMileCalculator.astro";
+
+Building departments are specific about what "almost complete" means:
+functionally complete, with only minor items remaining, not 85% or even
+95%. A developer who requests final inspection while real work remains
+routinely gets refused, and that refusal isn't paperwork friction — it's
+the entire point of the last mile in this domain. A punch list is
+normally created at 95–98% completion and should, on paper, take a
+few weeks to close out. But retainage — most contracts hold back 5–10%
+of total payment until every punch-list item is done — means the
+contractor's own cash is now locked up specifically by the smallest
+items on the list. And every day the certificate of occupancy is
+delayed is a day of rent, sale proceeds, or lease income the building is
+legally barred from earning, on top of possible liquidated damages and
+tenants who can walk away from a lease entirely if a promised move-in
+date slips.
+
+<LastMileCalculator
+  heading="Cost of delay as completion approaches, before the certificate of occupancy"
+  headingId="week-09-calculator"
+  unitLabel="% of construction complete"
+  resultLabel="Relative cost of a day's delay to occupancy at this point"
+  curve={[
+    { percent: 80, cost: 1 },
+    { percent: 90, cost: 2 },
+    { percent: 95, cost: 4 },
+    { percent: 98, cost: 8 },
+    { percent: 99.5, cost: 20 },
+    { percent: 100, cost: 1 },
+  ]}
+/>
+
+Notice what the curve does at the very end: it doesn't keep climbing
+to 100%, it drops. That's the domain-specific complication worth adding
+to the thesis. In software, the last mile is expensive continuously —
+hardening never has a single moment where the cost resets. In
+construction, the cost is a spike that resolves the instant the
+certificate is actually issued, because occupancy is a threshold, not a
+gradient: the building goes from "cannot legally be used" to "can be
+used" in one inspection, and every dollar of delay cost stops accruing
+the moment that gate opens. This is a genuinely different failure shape
+from anything earlier in the course — not a debt that compounds forever,
+but a toll that's brutal right up to a fixed gate and vanishes the
+instant that gate opens. The lesson for anyone managing a last mile like
+this isn't "finish faster," it's "identify exactly where your gate is,"
+because the true cost curve is invisible if you're only tracking percent
+complete instead of distance to the actual legal threshold.
