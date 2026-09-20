@@ -76,8 +76,56 @@ export const collections = {
         mechanic: z.enum(["diagram", "calculator", "cost-curve", "quiz", "other"]),
         // External sources (see CLAUDE.md): overrides the platform default
         // of an optional, possibly-empty list — a lecture needs at least one
-        // real, verified source connected to its specific claim.
-        links: z.array(z.object({ label: z.string(), url: z.url() })).min(1),
+        // real, verified source connected to its specific claim. sourceType
+        // mirrors CLAUDE.md's own four categories for what counts as primary
+        // or authoritative, plus "secondary" as an honest escape hatch for
+        // the handful of already-chosen sources that don't actually clear
+        // that bar — the citation ledger (/citations/) surfaces those
+        // plainly rather than mislabelling them to force a clean answer.
+        links: z
+          .array(
+            z.object({
+              label: z.string(),
+              url: z.url(),
+              sourceType: z.enum([
+                "peer-reviewed",
+                "primary-org",
+                "original-work",
+                "citable-other",
+                "secondary",
+              ]),
+              why: z.string().trim().min(20),
+            }),
+          )
+          .min(1),
+        // Cost/risk curve backing that week's own CostCurveSlider or
+        // LastMileCalculator mechanic. Frontmatter is the single source of
+        // truth: the mechanic component and the /lectures/ syllabus timeline
+        // (SyllabusTimeline.astro) both read it via `frontmatter.costCurve`
+        // rather than each keeping its own copy. Only weeks 5, 6, 9, 10 have
+        // one — see CLAUDE.md's "only built where a real curve exists" rule.
+        costCurve: z
+          .object({
+            unit: z.string(),
+            points: z.array(z.object({ percent: z.number(), cost: z.number() })).min(2),
+          })
+          .optional(),
+        // Week 11's polish-curve dial plots two series against a different
+        // axis (polish increments, not percent complete), so it needs its
+        // own shape rather than being forced into costCurve's.
+        polishCurve: z
+          .object({
+            points: z
+              .array(
+                z.object({
+                  polish: z.number(),
+                  engineeringCost: z.number(),
+                  userValue: z.number(),
+                }),
+              )
+              .min(2),
+          })
+          .optional(),
       })
       .loose(),
   }),

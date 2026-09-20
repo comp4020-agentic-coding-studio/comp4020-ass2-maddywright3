@@ -12,8 +12,12 @@ mechanic: diagram
 links:
   - label: "Jon Bentley, \"Programming Pearls: Bumper-Sticker Computer Science\" (Communications of the ACM, Sept. 1985) — the column that popularised the ninety-ninety rule, written by its author"
     url: https://moss.cs.iit.edu/cs100/Bentley_BumperSticker.pdf
+    sourceType: original-work
+    why: "Bentley's own column, in his own words, introducing the ninety-ninety rule — not a summary of it by someone else."
   - label: "Duke Nukem Forever: What Happened? (Matt McMuscles)"
     url: https://www.youtube.com/watch?v=EL7HETVAiXY
+    sourceType: secondary
+    why: "A third-party YouTube retrospective, not the developers' own account — kept as this week's illustrative case, not as authoritative evidence for the claim."
 week: 1
 date: 2027-02-22
 teachers:
@@ -24,6 +28,7 @@ related:
 ---
 
 import ProcessDiagram from "../../components/ProcessDiagram.astro";
+import { YouTube } from "astro-embed";
 
 A demo and a shipped product are not the same artefact at 90% and 100%
 completion. They are two different projects that happen to share a
@@ -97,6 +102,8 @@ the second kind. Feature creep isn't a distraction from finishing; in
 software specifically, it's a way of avoiding it, because adding a new
 feature feels like progress and paying down the interest on old shortcuts
 does not.
+
+<YouTube id="EL7HETVAiXY" title="Duke Nukem Forever: What Happened? (Matt McMuscles)" />
 
 The complication worth sitting with: this means the cost of finishing
 isn't fixed by how much is left to build. It's fixed by how many

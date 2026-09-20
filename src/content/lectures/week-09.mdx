@@ -12,6 +12,17 @@ mechanic: calculator
 links:
   - label: "Procore: Certificate of Occupancy Explained for Construction"
     url: https://www.procore.com/library/certificate-of-occupancy
+    sourceType: citable-other
+    why: "Procore is the construction industry's most widely used project-management platform; this is its own practitioner-authored explainer of how occupancy inspections and gating actually work, used here for procedural facts rather than a contested statistic."
+costCurve:
+  unit: "% of construction complete"
+  points:
+    - { percent: 80, cost: 1 }
+    - { percent: 90, cost: 2 }
+    - { percent: 95, cost: 4 }
+    - { percent: 98, cost: 8 }
+    - { percent: 99.5, cost: 20 }
+    - { percent: 100, cost: 1 }
 week: 9
 date: 2027-05-03
 teachers:
@@ -40,16 +51,9 @@ date slips.
 <LastMileCalculator
   heading="Cost of delay as completion approaches, before the certificate of occupancy"
   headingId="week-09-calculator"
-  unitLabel="% of construction complete"
+  unitLabel={frontmatter.costCurve.unit}
   resultLabel="Relative cost of a day's delay to occupancy at this point"
-  curve={[
-    { percent: 80, cost: 1 },
-    { percent: 90, cost: 2 },
-    { percent: 95, cost: 4 },
-    { percent: 98, cost: 8 },
-    { percent: 99.5, cost: 20 },
-    { percent: 100, cost: 1 },
-  ]}
+  curve={frontmatter.costCurve.points}
 />
 
 Notice what the curve does at the very end: it doesn't keep climbing

@@ -12,10 +12,25 @@ mechanic: calculator
 links:
   - label: "Texas Lawyers' Insurance Exchange: Scheduling Errors and Legal Malpractice"
     url: https://www.tlie.org/resource/scheduling-errors-and-legal-malpractice
+    sourceType: primary-org
+    why: "TLIE is a malpractice insurer publishing its own resource on the risk it underwrites and pays out on."
   - label: "Jarvis & Vollweiler, Legal Malpractice in Florida: A Statistical Profile, St. Mary's Journal on Legal Malpractice & Ethics 14(2) (2024)"
     url: https://commons.stmarytx.edu/lmej/vol14/iss2/2/
+    sourceType: citable-other
+    why: "Original legal-scholarship research by its named authors, built on 1,000 hours mining Florida's own malpractice-claims database — law-review editing isn't blind peer review, but this is the same class of citable original academic work."
   - label: "The Florida Bar: New NSU Law study reveals legal malpractice trends in Florida"
     url: https://www.floridabar.org/the-florida-bar-news/new-nsu-law-study-reveals-legal-malpractice-trends-in-florida/
+    sourceType: primary-org
+    why: "The Florida Bar is a state bar association — the same category as the ABA example in CLAUDE.md's sourcing rule — reporting via its own news channel."
+costCurve:
+  unit: "US dollars — average insurer payout per paid claim, Jarvis & Vollweiler (2024)"
+  points:
+    - { percent: 0, cost: 0 }
+    - { percent: 50, cost: 3083 }
+    - { percent: 80, cost: 7707 }
+    - { percent: 95, cost: 23121 }
+    - { percent: 99, cost: 61656 }
+    - { percent: 100, cost: 154139 }
 week: 5
 date: 2027-03-22
 teachers:
@@ -66,16 +81,9 @@ statistic week 6 spends its own lecture calling out — so it isn't.
 <LastMileCalculator
   heading="Malpractice exposure as a filing deadline approaches"
   headingId="week-05-calculator"
-  unitLabel="US dollars — average insurer payout per paid claim, Jarvis & Vollweiler (2024)"
+  unitLabel={frontmatter.costCurve.unit}
   resultLabel="Estimated malpractice payout exposure if the deadline is missed from here"
-  curve={[
-    { percent: 0, cost: 0 },
-    { percent: 50, cost: 3083 },
-    { percent: 80, cost: 7707 },
-    { percent: 95, cost: 23121 },
-    { percent: 99, cost: 61656 },
-    { percent: 100, cost: 154139 },
-  ]}
+  curve={frontmatter.costCurve.points}
 />
 
 The complication this adds to the thesis: not every last mile rewards

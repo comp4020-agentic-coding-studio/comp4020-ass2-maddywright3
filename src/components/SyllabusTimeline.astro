@@ -1,0 +1,256 @@
+---
+import { getPublishedCollection } from "astro-course-university/content";
+import { withBase } from "astro-theme-university/url";
+
+const lectures = await getPublishedCollection("lectures");
+const weeks = lectures.slice().sort((a, b) => a.data.week - b.data.week);
+
+const mechanicGlyph: Record<string, string> = {
+  diagram: "Clickable process diagram — the argument lives in the stages, not a number",
+  quiz: "Reflective quiz across every domain",
+  other: "Bespoke widget built because no cost-curve template fit this domain",
+};
+
+const SPARK_WIDTH = 64;
+const SPARK_HEIGHT = 32;
+
+function sparklinePath(points: { x: number; y: number }[]) {
+  const xs = points.map((p) => p.x);
+  const ys = points.map((p) => p.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const spanX = maxX - minX || 1;
+  const spanY = maxY - minY || 1;
+  return points
+    .map((p, i) => {
+      const x = ((p.x - minX) / spanX) * SPARK_WIDTH;
+      const y = SPARK_HEIGHT - ((p.y - minY) / spanY) * SPARK_HEIGHT;
+      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+}
+
+const nodes = weeks.map((lecture) => {
+  const { costCurve, polishCurve, mechanic, angle, title, week } = lecture.data;
+
+  let kind: "quantified" | "flat" = "flat";
+  let path = "";
+  let zeroY: number | null = null;
+
+  if (costCurve) {
+    kind = "quantified";
+    path = sparklinePath(costCurve.points.map((p) => ({ x: p.percent, y: p.cost })));
+  } else if (polishCurve) {
+    kind = "quantified";
+    const points = polishCurve.points.map((p) => ({ x: p.polish, y: p.userValue }));
+    path = sparklinePath(points);
+    const ys = points.map((p) => p.y);
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+    if (minY < 0 && maxY > 0) {
+      zeroY = SPARK_HEIGHT - ((0 - minY) / (maxY - minY)) * SPARK_HEIGHT;
+    }
+  }
+
+  return {
+    id: lecture.id,
+    week,
+    title,
+    angle,
+    mechanic,
+    kind,
+    path,
+    zeroY,
+    glyph: mechanicGlyph[mechanic] ?? mechanic,
+  };
+});
+---
+
+<div class="lm-timeline">
+  <ol class="lm-timeline-track">
+    {
+      nodes.map((node) => (
+        <li class={`lm-timeline-node lm-timeline-node--${node.kind}`}>
+          <a href={withBase(`/lectures/${node.id}/`)} aria-describedby={`lm-timeline-tip-${node.id}`}>
+            <span class="lm-timeline-week">Week {node.week}</span>
+            {node.kind === "quantified" ? (
+              <svg
+                viewBox={`0 0 ${SPARK_WIDTH} ${SPARK_HEIGHT}`}
+                class="lm-timeline-spark"
+                aria-hidden="true"
+              >
+                {node.zeroY !== null && (
+                  <line
+                    x1="0"
+                    y1={node.zeroY}
+                    x2={SPARK_WIDTH}
+                    y2={node.zeroY}
+                    class="lm-timeline-spark-zero"
+                  />
+                )}
+                <path d={node.path} />
+              </svg>
+            ) : (
+              <span
+                class="lm-timeline-flat"
+                aria-hidden="true"
+                data-mechanic={node.mechanic}
+                title={node.glyph}
+              />
+            )}
+            <span class="lm-timeline-title">{node.title}</span>
+          </a>
+          <span role="tooltip" id={`lm-timeline-tip-${node.id}`} class="lm-timeline-tooltip">
+            {node.angle}
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="lm-timeline-caption">
+    Five weeks — 5, 6, 9, 10, 11 — have a real, sourced number behind their
+    last-mile claim, so their marker is an actual sparkline of that week's own
+    curve, not a decoration standing in for one. The other seven don't reduce
+    to a number without inventing one, so they get a flat marker instead: the
+    missing curve is the honest answer, not a gap papered over with a fake
+    chart. Hover or focus any week for its one-sentence case.
+  </p>
+</div>
+
+<style>
+  .lm-timeline {
+    margin-block-end: var(--at-spacing-xl, 2rem);
+  }
+
+  .lm-timeline-track {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--at-spacing-md);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lm-timeline-node {
+    position: relative;
+    flex: 1 1 7rem;
+    min-width: 7rem;
+  }
+
+  .lm-timeline-node a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--at-spacing-xs, 0.25rem);
+    padding: var(--at-spacing-sm);
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    text-decoration: none;
+    color: inherit;
+    background: var(--at-bg-alt);
+    height: 100%;
+  }
+
+  .lm-timeline-node a:hover,
+  .lm-timeline-node a:focus {
+    border-color: var(--at-primary);
+  }
+
+  .lm-timeline-week {
+    font-size: var(--at-font-size-sm);
+    font-weight: 700;
+    color: var(--at-text-secondary);
+  }
+
+  .lm-timeline-spark {
+    width: 64px;
+    height: 32px;
+  }
+
+  .lm-timeline-spark path {
+    fill: none;
+    stroke: var(--at-primary);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .lm-timeline-spark-zero {
+    stroke: var(--at-border);
+    stroke-width: 1;
+    stroke-dasharray: 2 2;
+  }
+
+  .lm-timeline-flat {
+    display: block;
+    width: 64px;
+    height: 32px;
+  }
+
+  .lm-timeline-flat[data-mechanic="diagram"] {
+    background: repeating-linear-gradient(
+      to right,
+      var(--at-text-secondary) 0 6px,
+      transparent 6px 12px
+    );
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+  }
+
+  .lm-timeline-flat[data-mechanic="other"] {
+    background: repeating-linear-gradient(
+      135deg,
+      var(--at-text-secondary) 0 4px,
+      transparent 4px 8px
+    );
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 8px;
+    clip-path: polygon(0 60%, 30% 60%, 40% 20%, 55% 80%, 70% 40%, 100% 40%, 100% 48%, 0 48%);
+  }
+
+  .lm-timeline-flat[data-mechanic="quiz"] {
+    background-image: radial-gradient(circle, var(--at-text-secondary) 2.5px, transparent 2.5px);
+    background-size: 10px 10px;
+    background-position: center;
+    background-repeat: repeat-x;
+  }
+
+  .lm-timeline-title {
+    font-size: var(--at-font-size-sm);
+    text-align: center;
+    color: var(--at-text-secondary);
+  }
+
+  .lm-timeline-tooltip {
+    position: absolute;
+    inset-block-end: calc(100% + var(--at-spacing-xs, 0.25rem));
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 16rem;
+    padding: var(--at-spacing-sm);
+    border-radius: var(--at-border-radius);
+    background: var(--at-text);
+    color: var(--at-bg);
+    font-size: var(--at-font-size-sm);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease-out;
+    z-index: 10;
+  }
+
+  .lm-timeline-node:hover .lm-timeline-tooltip,
+  .lm-timeline-node:focus-within .lm-timeline-tooltip {
+    opacity: 1;
+  }
+
+  .lm-timeline-caption {
+    margin-block-start: var(--at-spacing-md);
+    color: var(--at-text-secondary);
+    font-size: var(--at-font-size-sm);
+  }
+</style>

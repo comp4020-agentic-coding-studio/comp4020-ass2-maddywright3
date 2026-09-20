@@ -12,6 +12,15 @@ mechanic: other
 links:
   - label: "Richard P. Gabriel: The Rise of \"Worse Is Better\""
     url: https://dreamsongs.com/RiseOfWorseIsBetter.html
+    sourceType: original-work
+    why: "Gabriel's own essay, in his own words, making and later reflecting on his own argument — the primary text this week is built around."
+polishCurve:
+  points:
+    - { polish: 0, engineeringCost: 1, userValue: 1 }
+    - { polish: 3, engineeringCost: 4, userValue: 5 }
+    - { polish: 6, engineeringCost: 9, userValue: 6 }
+    - { polish: 8, engineeringCost: 14, userValue: 3 }
+    - { polish: 10, engineeringCost: 20, userValue: -4 }
 week: 11
 date: 2027-05-17
 teachers:
@@ -51,13 +60,7 @@ more ways for the simple thing someone chose to stop being simple.
 <PolishCurveDial
   heading="Engineering cost vs. user value as polish keeps being added"
   headingId="week-11-dial"
-  curve={[
-    { polish: 0, engineeringCost: 1, userValue: 1 },
-    { polish: 3, engineeringCost: 4, userValue: 5 },
-    { polish: 6, engineeringCost: 9, userValue: 6 },
-    { polish: 8, engineeringCost: 14, userValue: 3 },
-    { polish: 10, engineeringCost: 20, userValue: -4 },
-  ]}
+  curve={frontmatter.polishCurve.points}
 />
 
 This is where the thesis has to be complicated, not just extended. "The

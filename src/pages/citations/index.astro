@@ -1,0 +1,147 @@
+---
+import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
+import { getPublishedCollection } from "astro-course-university/content";
+import { withBase } from "astro-theme-university/url";
+import { siteConfig } from "../../site-config";
+import { formatCourseDate } from "../../lib/dates";
+
+const lectures = (await getPublishedCollection("lectures")).sort(
+  (a, b) => a.data.week - b.data.week,
+);
+
+const sourceTypeLabel: Record<string, string> = {
+  "peer-reviewed": "Peer-reviewed",
+  "primary-org": "Primary organisation",
+  "original-work": "Original work by its author",
+  "citable-other": "Citable material",
+  secondary: "Secondary — flagged",
+};
+
+const totalLinks = lectures.reduce((sum, lecture) => sum + lecture.data.links.length, 0);
+const secondaryCount = lectures.reduce(
+  (sum, lecture) => sum + lecture.data.links.filter((link) => link.sourceType === "secondary").length,
+  0,
+);
+---
+
+<ContentLayout
+  title="Citation ledger"
+  description="Every external source cited across all twelve weeks, tagged as primary or authoritative — or flagged plainly when it isn't — with the reasoning stated alongside each one."
+  {...siteConfig}
+>
+  <p>
+    A course that spends twelve weeks arguing that finishing things properly
+    matters shouldn't ask a visitor to just trust that its own citations are
+    solid. Every source linked from a lecture is listed here, grouped by week,
+    tagged by what kind of source it actually is, with the one-line reasoning
+    for that tag written down rather than left implicit. Where a source
+    doesn't clear that bar, it's tagged <strong>secondary</strong> and said so
+    plainly, not quietly upgraded to look more authoritative than it is.
+  </p>
+
+  <p class="lm-citations-summary">
+    <strong>{totalLinks}</strong> sources across {lectures.length} lectures ·{" "}
+    <strong>{totalLinks - secondaryCount}</strong> primary or authoritative ·{" "}
+    <strong>{secondaryCount}</strong> flagged secondary
+  </p>
+
+  {
+    lectures.map((lecture) => (
+      <section class="lm-citations-week">
+        <h2>
+          <a href={withBase(`/lectures/${lecture.id}/`)}>
+            Week {lecture.data.week}: {lecture.data.title}
+          </a>
+          <span class="lm-citations-date">{formatCourseDate(lecture.data.date)}</span>
+        </h2>
+        <ul class="lm-citations-list">
+          {lecture.data.links.map((link) => (
+            <li class="lm-citations-item">
+              <div class="lm-citations-item-head">
+                <a href={link.url} target="_blank" rel="noopener noreferrer">
+                  {link.label}
+                </a>
+                <span class={`lm-citations-tag lm-citations-tag--${link.sourceType}`}>
+                  {sourceTypeLabel[link.sourceType] ?? link.sourceType}
+                </span>
+              </div>
+              <p class="lm-citations-why">{link.why}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</ContentLayout>
+
+<style>
+  .lm-citations-summary {
+    padding: var(--at-spacing-md);
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    background: var(--at-bg-alt);
+    width: fit-content;
+  }
+
+  .lm-citations-week {
+    margin-block-start: var(--at-spacing-xl, 2rem);
+  }
+
+  .lm-citations-week h2 {
+    display: flex;
+    align-items: baseline;
+    gap: var(--at-spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .lm-citations-date {
+    font-size: var(--at-font-size-sm);
+    font-weight: 400;
+    color: var(--at-text-secondary);
+  }
+
+  .lm-citations-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--at-spacing-md);
+  }
+
+  .lm-citations-item {
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    padding: var(--at-spacing-md);
+  }
+
+  .lm-citations-item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--at-spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .lm-citations-tag {
+    font-size: var(--at-font-size-sm);
+    font-weight: 600;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--at-border);
+    white-space: nowrap;
+  }
+
+  .lm-citations-tag--secondary {
+    background: var(--at-bg-alt);
+    color: var(--at-text-secondary);
+    border-style: dashed;
+  }
+
+  .lm-citations-why {
+    margin-block-start: var(--at-spacing-sm);
+    margin-block-end: 0;
+    color: var(--at-text-secondary);
+    font-size: var(--at-font-size-sm);
+  }
+</style>

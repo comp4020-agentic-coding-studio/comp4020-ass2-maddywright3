@@ -12,8 +12,20 @@ mechanic: cost-curve
 links:
   - label: "The Register: the '100x more expensive' bug-cost research might not even exist"
     url: https://www.theregister.com/2021/07/22/bugs_expense_bs/
+    sourceType: citable-other
+    why: "Reputable, non-collaborative tech journalism conducting its own citation-tracing investigation into Wayne and Bossavit's research, not merely repeating someone else's essay — CLAUDE.md's fourth, 'similarly citable material' category."
   - label: "NIST Planning Report 02-3: The Economic Impacts of Inadequate Infrastructure for Software Testing (2002)"
     url: https://www.nist.gov/document/report02-3pdf
+    sourceType: primary-org
+    why: "NIST is the US government's own standards body, publishing its own economic-impact report."
+costCurve:
+  unit: "× relative cost (a dimensionless multiplier, not a dollar or hour figure — see below)"
+  points:
+    - { percent: 0, cost: 1 }
+    - { percent: 50, cost: 2 }
+    - { percent: 90, cost: 15 }
+    - { percent: 95, cost: 40 }
+    - { percent: 100, cost: 100 }
 week: 6
 date: 2027-03-29
 teachers:
@@ -63,14 +75,8 @@ and touched again.
 <CostCurveSlider
   heading="Cost to fix the same defect, by how far production had already run"
   headingId="week-06-slider"
-  unitLabel="× relative cost (a dimensionless multiplier, not a dollar or hour figure — see below)"
-  curve={[
-    { percent: 0, cost: 1 },
-    { percent: 50, cost: 2 },
-    { percent: 90, cost: 15 },
-    { percent: 95, cost: 40 },
-    { percent: 100, cost: 100 },
-  ]}
+  unitLabel={frontmatter.costCurve.unit}
+  curve={frontmatter.costCurve.points}
 />
 
 That slider is deliberately unit-less, and it's worth saying why rather than

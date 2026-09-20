@@ -12,6 +12,17 @@ mechanic: calculator
 links:
   - label: "Boeing: Statistical Summary of Commercial Jet Airplane Accidents"
     url: https://www.boeing.com/content/dam/boeing/v2/safety/statsum.pdf
+    sourceType: primary-org
+    why: "Boeing's own official annual accident-statistics publication — CLAUDE.md's own named example of a primary organisation."
+costCurve:
+  unit: "% of the flight complete"
+  points:
+    - { percent: 0, cost: 8 }
+    - { percent: 15, cost: 6 }
+    - { percent: 50, cost: 10 }
+    - { percent: 80, cost: 13 }
+    - { percent: 95, cost: 35 }
+    - { percent: 100, cost: 4 }
 week: 10
 date: 2027-05-10
 teachers:
@@ -43,16 +54,9 @@ flight is otherwise "basically done."
 <LastMileCalculator
   heading="Relative fatal-accident risk by phase of flight"
   headingId="week-10-calculator"
-  unitLabel="% of the flight complete"
+  unitLabel={frontmatter.costCurve.unit}
   resultLabel="Relative share of historical fatal-accident risk at this phase"
-  curve={[
-    { percent: 0, cost: 8 },
-    { percent: 15, cost: 6 },
-    { percent: 50, cost: 10 },
-    { percent: 80, cost: 13 },
-    { percent: 95, cost: 35 },
-    { percent: 100, cost: 4 },
-  ]}
+  curve={frontmatter.costCurve.points}
 />
 
 The complication for the thesis: aviation's whole safety culture is
