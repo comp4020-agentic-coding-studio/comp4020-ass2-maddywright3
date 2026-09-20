@@ -1,0 +1,134 @@
+---
+import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
+import { getPublishedCollection } from "astro-course-university/content";
+import { withBase } from "astro-theme-university/url";
+import { sessionLabels, siteConfig } from "../../site-config";
+import { formatCourseDate } from "../../lib/dates";
+
+const lectures = await getPublishedCollection("lectures");
+const sessions = await getPublishedCollection("sessions");
+const assessments = await getPublishedCollection("assessments");
+
+interface Row {
+  date: Date;
+  week: number | null;
+  kind: string;
+  title: string;
+  href: string | null;
+  detail?: string;
+}
+
+const rows: Row[] = [
+  ...lectures.map((entry) => ({
+    date: entry.data.date,
+    week: entry.data.week,
+    kind: "Lecture",
+    title: entry.data.title,
+    href: `/lectures/${entry.id}/`,
+  })),
+  ...sessions.map((entry) => ({
+    date: entry.data.date,
+    week: entry.data.week,
+    kind: sessionLabels.singular,
+    title: entry.data.title,
+    href: `/sessions/${entry.id}/`,
+  })),
+  ...assessments.map((entry) => ({
+    date: entry.data.due,
+    week: entry.data.week,
+    kind: "Assessment due",
+    title: entry.data.title,
+    href: `/assessments/${entry.id}/`,
+    detail: `${entry.data.weight}%`,
+  })),
+  {
+    date: new Date("2027-04-05T00:00:00Z"),
+    week: null,
+    kind: "Break",
+    title: "Mid-semester teaching break (5–18 April, ANU calendar)",
+    href: null,
+  },
+].sort((a, b) => a.date.getTime() - b.date.getTime());
+---
+
+<ContentLayout
+  title="Schedule"
+  description={`Every lecture, ${sessionLabels.singular.toLowerCase()} and assessment due date in one place, in the order they actually happen.`}
+  {...siteConfig}
+>
+  <p>
+    One timetable for the semester: when each lecture is taught, when each{" "}
+    {sessionLabels.singular.toLowerCase()} runs, and when each assessment
+    (including the twelve {sessionLabels.plural.toLowerCase()} as a set) is
+    due. Dates follow the real ANU Semester 1 2027 calendar, including the
+    two-week mid-semester teaching break between weeks 6 and 7.
+  </p>
+
+  <table class="schedule-table">
+    <caption class="visually-hidden">Course schedule by date</caption>
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Week</th>
+        <th scope="col">Type</th>
+        <th scope="col">Item</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr class={row.kind === "Break" ? "schedule-break" : undefined}>
+            <td>{formatCourseDate(row.date)}</td>
+            <td>{row.week ?? "—"}</td>
+            <td>{row.kind}</td>
+            <td>
+              {row.href ? (
+                <a href={withBase(row.href)}>{row.title}</a>
+              ) : (
+                row.title
+              )}
+              {row.detail && <> · {row.detail}</>}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</ContentLayout>
+
+<style>
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block-start: var(--at-spacing-lg);
+  }
+
+  .schedule-table th,
+  .schedule-table td {
+    text-align: left;
+    padding: var(--at-spacing-sm) var(--at-spacing-md);
+    border-block-end: 1px solid var(--at-border);
+  }
+
+  .schedule-table thead th {
+    border-block-end: 2px solid var(--at-border);
+  }
+
+  .schedule-break td {
+    background: var(--at-bg-alt);
+    font-style: italic;
+    color: var(--at-text-secondary);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

@@ -5,7 +5,7 @@ description:
   builds towards
 week: 12
 due: 2027-05-28T12:00:00+10:00
-weight: 60
+weight: 50
 marking:
   mode: holistic
   description:

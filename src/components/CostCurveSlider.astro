@@ -7,10 +7,11 @@ interface CurvePoint {
 interface Props {
   heading: string;
   headingId: string;
+  unitLabel: string;
   curve: CurvePoint[];
 }
 
-const { heading, headingId, curve } = Astro.props;
+const { heading, headingId, unitLabel, curve } = Astro.props;
 const sortedCurve = [...curve].sort((a, b) => a.percent - b.percent);
 const maxCost = Math.max(...sortedCurve.map((point) => point.cost));
 ---
@@ -21,6 +22,7 @@ const maxCost = Math.max(...sortedCurve.map((point) => point.cost));
   aria-labelledby={headingId}
   data-curve={JSON.stringify(sortedCurve)}
   data-max-cost={maxCost}
+  data-unit-label={unitLabel}
 >
   <h2 id={headingId}>{heading}</h2>
   <label class="lm-slider-label" for={`${headingId}-range`}>
@@ -41,6 +43,7 @@ const maxCost = Math.max(...sortedCurve.map((point) => point.cost));
   <p class="lm-slider-readout" data-lm-slider-readout aria-live="polite">
     Drag the slider to see cost rise.
   </p>
+  <p class="lm-slider-hint">Measured in {unitLabel}.</p>
 </section>
 
 <style>
@@ -88,6 +91,12 @@ const maxCost = Math.max(...sortedCurve.map((point) => point.cost));
     border: 1px dashed var(--at-border);
     font-weight: 600;
   }
+
+  .lm-slider-hint {
+    color: var(--at-text-secondary);
+    font-size: var(--at-font-size-sm);
+    margin-block-start: var(--at-spacing-sm);
+  }
 </style>
 
 <script>
@@ -116,6 +125,7 @@ const maxCost = Math.max(...sortedCurve.map((point) => point.cost));
 
     const curve = JSON.parse(root.dataset.curve ?? "[]") as CurvePoint[];
     const maxCost = Number(root.dataset.maxCost ?? "1") || 1;
+    const unitLabel = root.dataset.unitLabel ?? "units";
     const input = root.querySelector<HTMLInputElement>("[data-lm-slider]");
     const bar = root.querySelector<HTMLElement>("[data-lm-slider-bar]");
     const readout = root.querySelector<HTMLElement>("[data-lm-slider-readout]");
@@ -125,7 +135,7 @@ const maxCost = Math.max(...sortedCurve.map((point) => point.cost));
       const percent = Number(input!.value);
       const cost = interpolate(curve, percent);
       bar!.style.height = `${Math.min(100, (cost / maxCost) * 100)}%`;
-      readout!.textContent = `At ${percent}% complete, estimated cost is ${cost.toFixed(1)}.`;
+      readout!.textContent = `At ${percent}% complete, estimated cost is ${cost.toFixed(1)} ${unitLabel}.`;
     }
 
     input.addEventListener("input", update);

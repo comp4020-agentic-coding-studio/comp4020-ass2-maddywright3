@@ -12,6 +12,10 @@ mechanic: calculator
 links:
   - label: "Texas Lawyers' Insurance Exchange: Scheduling Errors and Legal Malpractice"
     url: https://www.tlie.org/resource/scheduling-errors-and-legal-malpractice
+  - label: "Jarvis & Vollweiler, Legal Malpractice in Florida: A Statistical Profile, St. Mary's Journal on Legal Malpractice & Ethics 14(2) (2024)"
+    url: https://commons.stmarytx.edu/lmej/vol14/iss2/2/
+  - label: "The Florida Bar: New NSU Law study reveals legal malpractice trends in Florida"
+    url: https://www.floridabar.org/the-florida-bar-news/new-nsu-law-study-reveals-legal-malpractice-trends-in-florida/
 week: 5
 date: 2027-03-22
 teachers:
@@ -23,15 +27,16 @@ related:
 import LastMileCalculator from "../../components/LastMileCalculator.astro";
 
 Lawyers spend years training to argue. Almost none of that training goes
-into the thing that actually ends the most careers: the calendar.
-Malpractice insurers who track claims by cause consistently put missed
-deadlines — filing statutes of limitations, response windows, appeal
-periods — among the single largest categories of claims against
-attorneys, with figures in various studies ranging from roughly a
-quarter to as much as a third or more of all claims tracing back to a
-date that simply wasn't calendared, or was calendared and then not
-acted on. That's a strange place for a profession built on argument to
-be losing the most cases: not on the law, but on scheduling.
+into the thing that actually ends the most careers: the calendar. The most
+rigorous answer we have here isn't a rule of thumb, it's a paper: Robert
+Jarvis and Debra Moss Vollweiler spent 1,000 hours mining Florida's Office
+of Insurance Regulation legal-malpractice database — more than 4,500 claims,
+filed against over 100 insurers, across a 44-year window — and found that
+missing a statute of limitations or other deadline was the single most
+common error behind a malpractice claim: 8.6% of all claims, narrowly ahead
+of failing to pursue a claim or defense (8.4%) and negligent drafting
+(7.6%). That's a strange place for a profession built on argument to be
+losing the most cases: not on the law, but on the calendar.
 
 Here's why this last mile is uniquely unforgiving compared to every
 other domain this course has looked at. In software, a shortcut you took
@@ -42,28 +47,45 @@ argument; miss the date and the claim is often gone regardless of its
 merits. The "cost" of the last mile here isn't a steep number, it's a
 step function: negligible right up until the deadline, and then total.
 
+The same dataset also reports what insurers actually paid out, and it's
+worth being precise about what that number is and isn't. Across every paid
+claim in the sample — not deadline claims specifically, since the study
+doesn't break payout size out by cause of claim — insurers paid plaintiffs
+an average of $154,139 (in the 70.1% of claims where they paid anything at
+all; lawyers themselves paid an average of $11,757 out of pocket, mostly
+their deductible). That $154,139 figure is the one real, sourced number the
+calculator below is built on, and it anchors the 100%-missed end of the
+curve. The shape of the curve leading up to that point isn't a second
+measured statistic — no study tracks malpractice exposure at intermediate
+points before a deadline is actually blown, because there's nothing to
+measure yet. It's the same step-function argument made above, expressed on
+the one real dollar figure available rather than an invented one. Treating
+that lead-up shape as measured would be exactly the kind of laundered
+statistic week 6 spends its own lecture calling out — so it isn't.
+
 <LastMileCalculator
   heading="Malpractice exposure as a filing deadline approaches"
   headingId="week-05-calculator"
-  unitLabel="% of the filing window elapsed"
-  resultLabel="Relative malpractice exposure if the deadline is missed from here"
+  unitLabel="US dollars — average insurer payout per paid claim, Jarvis & Vollweiler (2024)"
+  resultLabel="Estimated malpractice payout exposure if the deadline is missed from here"
   curve={[
-    { percent: 0, cost: 1 },
-    { percent: 50, cost: 2 },
-    { percent: 80, cost: 5 },
-    { percent: 95, cost: 15 },
-    { percent: 99, cost: 40 },
-    { percent: 100, cost: 100 },
+    { percent: 0, cost: 0 },
+    { percent: 50, cost: 3083 },
+    { percent: 80, cost: 7707 },
+    { percent: 95, cost: 23121 },
+    { percent: 99, cost: 61656 },
+    { percent: 100, cost: 154139 },
   ]}
 />
 
 The complication this adds to the thesis: not every last mile rewards
 "try harder." A firm can be excellent at the law itself — the 90% that
 looks like the hard part to an outsider — and still be destroyed by the
-10% that looks like paperwork. That's precisely why disciplined firms
-treat deadline tracking as its own system, separate from case
-strategy: dedicated docketing software, redundant calendar entries, a
-second person who checks the first person's dates. The lesson
+10% that looks like paperwork, to the tune of $154,139 on average, and that
+number doesn't care how good the underlying argument was. That's precisely
+why disciplined firms treat deadline tracking as its own system, separate
+from case strategy: dedicated docketing software, redundant calendar
+entries, a second person who checks the first person's dates. The lesson
 generalizes: when a last-mile failure is irreversible rather than merely
 costly, the right response isn't more diligence from the same person who
 was already trying — it's redundancy built by design, because a step

@@ -12,6 +12,8 @@ mechanic: cost-curve
 links:
   - label: "The Register: the '100x more expensive' bug-cost research might not even exist"
     url: https://www.theregister.com/2021/07/22/bugs_expense_bs/
+  - label: "NIST Planning Report 02-3: The Economic Impacts of Inadequate Infrastructure for Software Testing (2002)"
+    url: https://www.nist.gov/document/report02-3pdf
 week: 6
 date: 2027-03-29
 teachers:
@@ -60,6 +62,7 @@ and touched again.
 <CostCurveSlider
   heading="Cost to fix the same defect, by how far production had already run"
   headingId="week-06-slider"
+  unitLabel="× relative cost (a dimensionless multiplier, not a dollar or hour figure — see below)"
   curve={[
     { percent: 0, cost: 1 },
     { percent: 50, cost: 2 },
@@ -68,6 +71,21 @@ and touched again.
     { percent: 100, cost: 100 },
   ]}
 />
+
+That slider is deliberately unit-less, and it's worth saying why rather than
+quietly picking a currency. Every dollar-denominated version of this
+multiplier we could find traces back to the same IBM training-note lineage
+already flagged above as unverifiable — putting a dollar sign on it would
+just launder the number a second time. Boehm and Basili's own replicated
+figure isn't costed either: they measured a ratio of relative effort, not a
+price. NIST's 2002 report does contain a real, defensible dollar figure —
+software defects were estimated to cost the US economy $59.5 billion a
+year, with $22.2 billion of that recoverable through better testing
+infrastructure — but that's a national, economy-wide aggregate, not a
+per-defect or per-phase cost, so it can't be repurposed to build a curve
+like this one without inventing the missing step ourselves. So the honest
+choice is the unit-less one: the slider reads in relative cost, stated
+plainly as an index rather than dressed up as a figure it isn't.
 
 Here's the complication worth sitting with: even the honest, surviving
 version of this multiplier is exactly why "finish inspection later" is
