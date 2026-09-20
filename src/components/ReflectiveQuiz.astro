@@ -36,8 +36,17 @@ const { heading, headingId, domains } = Astro.props;
       ))}
     </ul>
   </fieldset>
-  <button type="button" data-lm-quiz-submit>See results</button>
+  <div class="lm-quiz-actions">
+    <button type="button" data-lm-quiz-submit>See results</button>
+    <button type="button" class="lm-quiz-reset" data-lm-quiz-reset>Reset the quiz</button>
+  </div>
   <div class="lm-quiz-results" data-lm-quiz-results aria-live="polite"></div>
+  <div class="lm-quiz-feedback">
+    <button type="button" class="lm-quiz-feedback-submit" data-lm-quiz-feedback-submit>
+      Submit feedback
+    </button>
+    <span class="lm-quiz-feedback-status" data-lm-quiz-feedback-status aria-live="polite"></span>
+  </div>
 </section>
 
 <style>
@@ -79,15 +88,30 @@ const { heading, headingId, domains } = Astro.props;
     font-size: var(--at-font-size-sm);
   }
 
+  .lm-quiz-actions {
+    display: flex;
+    gap: var(--at-spacing-sm);
+    margin-block-start: var(--at-spacing-md);
+  }
+
   .lm-quiz button {
     font: inherit;
-    margin-block-start: var(--at-spacing-md);
     padding: var(--at-spacing-sm) var(--at-spacing-md);
     border-radius: var(--at-border-radius);
     border: 1px solid var(--at-primary);
     background: var(--at-primary);
     color: var(--at-on-primary);
     cursor: pointer;
+  }
+
+  .lm-quiz button.lm-quiz-reset {
+    background: var(--at-bg);
+    color: inherit;
+    border: 1px solid var(--at-border);
+  }
+
+  .lm-quiz button.lm-quiz-reset:hover {
+    background: var(--at-bg-alt);
   }
 
   .lm-quiz-results {
@@ -97,6 +121,28 @@ const { heading, headingId, domains } = Astro.props;
   .lm-quiz-results ul {
     padding-inline-start: var(--at-spacing-lg);
   }
+
+  .lm-quiz-feedback {
+    display: flex;
+    align-items: center;
+    gap: var(--at-spacing-sm);
+    margin-block-start: var(--at-spacing-md);
+  }
+
+  .lm-quiz button.lm-quiz-feedback-submit {
+    background: var(--at-bg);
+    color: inherit;
+    border: 1px solid var(--at-border);
+  }
+
+  .lm-quiz button.lm-quiz-feedback-submit:hover {
+    background: var(--at-bg-alt);
+  }
+
+  .lm-quiz-feedback-status {
+    color: var(--at-text-secondary);
+    font-size: var(--at-font-size-sm);
+  }
 </style>
 
 <script>
@@ -105,9 +151,12 @@ const { heading, headingId, domains } = Astro.props;
     root.dataset.lmQuizInitialized = "true";
 
     const submit = root.querySelector<HTMLButtonElement>("[data-lm-quiz-submit]");
+    const reset = root.querySelector<HTMLButtonElement>("[data-lm-quiz-reset]");
+    const feedbackSubmit = root.querySelector<HTMLButtonElement>("[data-lm-quiz-feedback-submit]");
+    const feedbackStatus = root.querySelector<HTMLElement>("[data-lm-quiz-feedback-status]");
     const results = root.querySelector<HTMLElement>("[data-lm-quiz-results]");
     const checkboxes = [...root.querySelectorAll<HTMLInputElement>("[data-lm-quiz-domain]")];
-    if (!submit || !results) return;
+    if (!submit || !reset || !feedbackSubmit || !feedbackStatus || !results) return;
 
     submit.addEventListener("click", () => {
       const checked = checkboxes.filter((checkbox) => checkbox.checked);
@@ -119,6 +168,18 @@ const { heading, headingId, domains } = Astro.props;
         .map((checkbox) => `<li>${checkbox.dataset.resultMessage ?? ""}</li>`)
         .join("");
       results.innerHTML = `<p>You hit ${checked.length} of ${checkboxes.length}:</p><ul>${items}</ul>`;
+    });
+
+    reset.addEventListener("click", () => {
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+      results.innerHTML = "";
+      feedbackStatus.textContent = "";
+    });
+
+    feedbackSubmit.addEventListener("click", () => {
+      feedbackStatus.textContent = "Feedback sent to convenor.";
     });
   }
 

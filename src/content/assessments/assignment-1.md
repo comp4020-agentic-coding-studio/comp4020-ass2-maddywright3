@@ -10,10 +10,14 @@ weight: 30
 marking:
   mode: weighted
   criteria:
-    - name: Response to the brief
-      weight: 60
-    - name: Quality of execution
-      weight: 40
+    - name: Names something real, not hypothetical or invented to fit the brief
+      weight: 20
+    - name: 'Diagnoses the specific last-mile cost — not "it took a while"'
+      weight: 35
+    - name: Uses a named week 1–6 framework explicitly, not just gestures at the course
+      weight: 30
+    - name: Evidence, length, and format match the brief
+      weight: 15
 spec:
   - names a specific, real unfinished thing — not a hypothetical one, and
     not one invented to fit the brief

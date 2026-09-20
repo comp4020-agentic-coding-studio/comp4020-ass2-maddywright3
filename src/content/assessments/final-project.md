@@ -7,12 +7,16 @@ week: 12
 due: 2027-05-28T12:00:00+10:00
 weight: 50
 marking:
-  mode: holistic
-  description:
-    The final project is judged as a whole against the brief — whether the
-    thing submitted is genuinely finished rather than merely further along,
-    whether the account of its last mile is specific rather than generic,
-    and whether it stands on its own without you there to explain it.
+  mode: weighted
+  criteria:
+    - name: The thing is actually finished, not just further along than Assignment 1
+      weight: 40
+    - name: Names the specific last-mile cost crossed, tied to at least two domains
+      weight: 30
+    - name: Stands on its own, without you there to explain it
+      weight: 20
+    - name: Evidence, length, and format match the brief
+      weight: 10
 spec:
   - the thing is actually finished, not just further along than it was —
     you can reuse Assignment 1's subject, but the diagnosis alone doesn't
